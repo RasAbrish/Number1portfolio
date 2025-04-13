@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Abrham Ababu - Resume</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.5;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+      color: #06b6d4;
+    }
+    .contact-info {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    h2 {
+      border-bottom: 2px solid #06b6d4;
+      padding-bottom: 5px;
+      margin-top: 20px;
+      color: #333;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    ul {
+      margin-top: 5px;
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 5px;
+    }
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .skills span {
+      background-color: #e6f7f9;
+      padding: 3px 8px;
+      margin: 3px;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Abrham Ababu</h1>
+  <div class="contact-info">
+    abrhambest7@gmail.com | +251 943113823 | abrhamababu.dev | LinkedIn | GitHub
+  </div>
+
+  <div class="section">
+    <h2>EDUCATION</h2>
+    <p><strong>Hope University, Addis Ababa, Ethiopia</strong></p>
+    <ul>
+      <li>ICT Club Member: Won 3rd Place in Hackathon Competition</li>
+      <li>Parliament Group Advisor (Current)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>CERTIFICATIONS</h2>
+    <ul>
+      <li>Udemy: Programming Fundamentals, AI Fundamentals, Android Development</li>
+      <li>FreeCodeCamp: Responsive Web Design</li>
+      <li>CodeSoft: Web Development</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>WORK EXPERIENCE</h2>
+    <p><strong>Safaricom Talent Cloud, Addis Ababa</strong><br>
+    Junior Full Stack Developer (6-week program)</p>
+    <ul>
+      <li>Developed/deployed MVP using React, Node.js, Express, PostgreSQL</li>
+      <li>Implemented Agile/Jira workflows and responsive UI (CSS/Bootstrap/Tailwind)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>PROJECTS</h2>
+    <p><strong>FuelFinder (Full Stack)</strong></p>
+    <ul>
+      <li>Built responsive interfaces with React, Node.js, Express</li>
+    </ul>
+    
+    <p><strong>Senior Project (Bilingual App - In Progress)</strong></p>
+    <ul>
+      <li>React.js, Node.js, PostgreSQL, TypeScript implementation</li>
+    </ul>
+    
+    <p><strong>Portfolio Website</strong></p>
+    <ul>
+      <li>Developed with HTML, CSS, JavaScript, React.js, Tailwind CSS</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>ACTIVITIES & LEADERSHIP</h2>
+    <p><strong>Hope University</strong></p>
+    <ul>
+      <li>ICT Club Advisor: Organized events, mentored 30+ students</li>
+      <li>Competed in 5+ hackathons/programming competitions</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>SKILLS</h2>
+    <p><strong>Programming:</strong> HTML | CSS | JavaScript | React | Node.js | Express | PostgreSQL</p>
+    <p><strong>Tools:</strong> Git | Jira | VS Code | Bootstrap | Tailwind | Firebase | Vercel</p>
+  </div>
+</body>
+</html>
