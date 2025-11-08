@@ -22,6 +22,7 @@ export default function Navbar() {
       const sections = document.querySelectorAll("section[id]")
       const scrollY = window.scrollY + 100
 
+      let foundSection = false
       sections.forEach((section) => {
         const sectionId = section.id
         const sectionTop = (section as HTMLElement).offsetTop
@@ -29,15 +30,26 @@ export default function Navbar() {
 
         if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
           setActiveSection(sectionId)
+          foundSection = true
         }
       })
+
+      // If no section found (at very top), set to home
+      if (!foundSection && window.scrollY < 100) {
+        setActiveSection("home")
+      }
     }
+
+    // Call handleScroll on mount to set initial state
+    handleScroll()
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId)
+
     const element = document.getElementById(sectionId)
     if (element) {
       const offset = 80
@@ -109,22 +121,65 @@ export default function Navbar() {
                   e.preventDefault()
                   scrollToSection(item.id)
                 }}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  activeSection === item.id ? "text-primary" : ""
+                className={`text-sm font-medium transition-all duration-300 relative pb-2 ${
+                  activeSection === item.id ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {item.label}
+                {activeSection === item.id && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-primary/50 rounded-full"></span>
+                )}
               </Link>
             ))}
-            <Button variant="ghost" size="icon" onClick={toggleTheme} className="ml-2" title="Toggle dark/light mode">
-              {isDark ? "☀️" : "🌙"}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="ml-2 hover:bg-primary/10 transition-colors"
+              title="Toggle dark/light mode"
+            >
+              {isDark ? (
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="5" />
+                  <path
+                    d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6m-16.78 7.78l4.24-4.24m5.08-5.08l4.24-4.24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              ) : (
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              )}
             </Button>
           </nav>
 
           {/* Mobile Navigation */}
           <div className="flex items-center gap-2 md:hidden">
-            <Button variant="ghost" size="icon" onClick={toggleTheme} title="Toggle dark/light mode">
-              {isDark ? "☀️" : "🌙"}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="hover:bg-primary/10 transition-colors"
+              title="Toggle dark/light mode"
+            >
+              {isDark ? (
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="5" />
+                  <path
+                    d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6m-16.78 7.78l4.24-4.24m5.08-5.08l4.24-4.24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              ) : (
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              )}
             </Button>
             <Sheet>
               <SheetTrigger asChild>
@@ -143,10 +198,13 @@ export default function Navbar() {
                         e.preventDefault()
                         scrollToSection(item.id)
                       }}
-                      className={`text-lg font-medium transition-colors hover:text-primary ${
+                      className={`text-lg font-medium transition-colors hover:text-primary relative pl-4 ${
                         activeSection === item.id ? "text-primary" : ""
                       }`}
                     >
+                      {activeSection === item.id && (
+                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-primary to-primary/50 rounded-r"></span>
+                      )}
                       {item.label}
                     </Link>
                   ))}

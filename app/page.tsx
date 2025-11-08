@@ -39,34 +39,91 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section */}
       <ScrollReveal>
-        <section id="about" className="py-20 bg-muted/50">
-          <div className="container px-4 mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center">About Me</h2>
-            <div className="max-w-2xl mx-auto text-center">
-              <p className="text-lg text-muted-foreground mb-6">
-                I'm a passionate developer focused on creating beautiful and functional web applications. With a keen
-                eye for design and a love for clean code, I bring ideas to life through technology. I've worked on
-                diverse projects ranging from agricultural management systems to fuel discovery platforms and enterprise
-                rent management solutions.
-              </p>
-              <div className="flex justify-center gap-4">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                  <Button variant="ghost" size="icon" className="hover:scale-110 transition-transform">
-                    <Github className="h-5 w-5" />
-                  </Button>
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                  <Button variant="ghost" size="icon" className="hover:scale-110 transition-transform">
-                    <Linkedin className="h-5 w-5" />
-                  </Button>
-                </a>
-                <a href="mailto:abrhambest7@gmail.com">
-                  <Button variant="ghost" size="icon" className="hover:scale-110 transition-transform">
-                    <Mail className="h-5 w-5" />
-                  </Button>
-                </a>
+        <section id="about" className="py-20 bg-muted/50 relative overflow-hidden">
+          {/* Background gradient animation */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 opacity-50"></div>
+
+          <div className="container px-4 mx-auto relative z-10">
+            <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
+              <span className="inline-block animate-fade-in-up">About Me</span>
+            </h2>
+
+            <div className="max-w-3xl mx-auto">
+              {/* Main content card */}
+              <div
+                className="backdrop-blur-sm bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl p-8 md:p-12 border border-primary/10 shadow-lg animate-fade-in-up"
+                style={{ animationDelay: "0.1s" }}
+              >
+                <p
+                  className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed animate-fade-in-up"
+                  style={{ animationDelay: "0.2s" }}
+                >
+                  I'm a passionate developer focused on creating beautiful and functional web applications. With a keen
+                  eye for design and a love for clean code, I bring ideas to life through technology. I've worked on
+                  diverse projects ranging from agricultural management systems to fuel discovery platforms and
+                  enterprise rent management solutions.
+                </p>
+
+                {/* Experience highlights */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                  <div
+                    className="text-center p-4 rounded-lg bg-primary/5 hover:bg-primary/10 transition-all duration-300 transform hover:scale-105 animate-fade-in-up"
+                    style={{ animationDelay: "0.3s" }}
+                  >
+                    <p className="text-2xl md:text-3xl font-bold text-primary">5+</p>
+                    <p className="text-sm text-muted-foreground">Months Experience</p>
+                  </div>
+                  <div
+                    className="text-center p-4 rounded-lg bg-primary/5 hover:bg-primary/10 transition-all duration-300 transform hover:scale-105 animate-fade-in-up"
+                    style={{ animationDelay: "0.4s" }}
+                  >
+                    <p className="text-2xl md:text-3xl font-bold text-primary">4+</p>
+                    <p className="text-sm text-muted-foreground">Projects Delivered</p>
+                  </div>
+                  <div
+                    className="text-center p-4 rounded-lg bg-primary/5 hover:bg-primary/10 transition-all duration-300 transform hover:scale-105 animate-fade-in-up"
+                    style={{ animationDelay: "0.5s" }}
+                  >
+                    <p className="text-2xl md:text-3xl font-bold text-primary">3+</p>
+                    <p className="text-sm text-muted-foreground">Companies</p>
+                  </div>
+                </div>
+
+                {/* Social links */}
+                <div className="flex justify-center gap-4 animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
+                  <a href="https://github.com/RasAbrish" target="_blank" rel="noopener noreferrer">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="hover:scale-110 transition-transform hover:text-primary hover:bg-primary/10 rounded-full"
+                    >
+                      <Github className="h-5 w-5" />
+                    </Button>
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/abrham-ababu-85a112297/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="hover:scale-110 transition-transform hover:text-primary hover:bg-primary/10 rounded-full"
+                    >
+                      <Linkedin className="h-5 w-5" />
+                    </Button>
+                  </a>
+                  <a href="mailto:abrhambest7@gmail.com">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="hover:scale-110 transition-transform hover:text-primary hover:bg-primary/10 rounded-full"
+                    >
+                      <Mail className="h-5 w-5" />
+                    </Button>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
