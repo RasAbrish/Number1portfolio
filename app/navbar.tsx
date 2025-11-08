@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Menu, X } from "lucide-react"
 import Image from "next/image"
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState("home")
   const [isDark, setIsDark] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const isDarkMode = document.documentElement.classList.contains("dark")
@@ -49,6 +48,7 @@ export default function Navbar() {
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId)
+    setMobileMenuOpen(false)
 
     const element = document.getElementById(sectionId)
     if (element) {
@@ -131,11 +131,9 @@ export default function Navbar() {
                 )}
               </Link>
             ))}
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
               onClick={toggleTheme}
-              className="ml-2 hover:bg-primary/10 transition-colors"
+              className="ml-2 p-2 hover:bg-primary/10 transition-colors rounded-md"
               title="Toggle dark/light mode"
             >
               {isDark ? (
@@ -149,20 +147,18 @@ export default function Navbar() {
                   />
                 </svg>
               ) : (
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 fill-black" viewBox="0 0 24 24">
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
               )}
-            </Button>
+            </button>
           </nav>
 
           {/* Mobile Navigation */}
           <div className="flex items-center gap-2 md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
               onClick={toggleTheme}
-              className="hover:bg-primary/10 transition-colors"
+              className="p-2 hover:bg-primary/10 transition-colors rounded-md"
               title="Toggle dark/light mode"
             >
               {isDark ? (
@@ -176,43 +172,40 @@ export default function Navbar() {
                   />
                 </svg>
               ) : (
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 fill-black" viewBox="0 0 24 24">
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
               )}
-            </Button>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Toggle menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <nav className="flex flex-col gap-4">
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.id}
-                      href={`#${item.id}`}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        scrollToSection(item.id)
-                      }}
-                      className={`text-lg font-medium transition-colors hover:text-primary relative pl-4 ${
-                        activeSection === item.id ? "text-primary" : ""
-                      }`}
-                    >
-                      {activeSection === item.id && (
-                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-primary to-primary/50 rounded-r"></span>
-                      )}
-                      {item.label}
-                    </Link>
-                  ))}
-                </nav>
-              </SheetContent>
-            </Sheet>
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 hover:bg-primary/10 transition-colors rounded-md"
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <nav className="md:hidden pb-4 flex flex-col gap-2 animate-in fade-in slide-in-from-top-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection(item.id)
+                }}
+                className={`px-4 py-2 rounded-md transition-colors ${
+                  activeSection === item.id ? "bg-primary text-primary-foreground" : "hover:bg-accent text-foreground"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        )}
       </div>
     </header>
   )
