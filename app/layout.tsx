@@ -1,29 +1,17 @@
 import type React from "react"
-import "@/app/globals.css"
-import type { Metadata } from "next"
-import { Mona_Sans as FontSans } from "next/font/google"
-import localFont from "next/font/local"
+import "@/styles/globals.css"
+import { Inter } from "next/font/google"
+import { Toaster } from "sonner"
 
-import { cn } from "@/lib/utils"
-import { ThemeProvider } from "@/components/theme-provider"
+const inter = Inter({ subsets: ["latin"] })
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-})
-
-const fontHeading = localFont({
-  src: "../assets/fonts/CalSans-SemiBold.woff2",
-  variable: "--font-heading",
-})
-
-export const metadata: Metadata = {
-  title: "Abrham Ababu | Portfolio",
-  description: "Personal portfolio of Abrham Ababu, showcasing skills and projects",
-  keywords: ["developer", "portfolio", "web development", "Abrham Ababu"],
-  authors: [{ name: "Abrham Ababu" }],
-  creator: "Abrham Ababu",
-    generator: 'v0.dev'
+export const metadata = {
+  title: "Abrham - Portfolio",
+  description: "Personal portfolio website of Abrham - Full Stack Developer",
+  icons: {
+    icon: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/favicon.ico.jpg-dyM4COv1QSaKfPKqxLZnDvm6puoEE0.jpeg",
+  },
+    generator: 'v0.app'
 }
 
 export default function RootLayout({
@@ -33,14 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable, fontHeading.variable)}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
+      <body className={inter.className}>
+        {children}
+        <Toaster />
       </body>
     </html>
   )
 }
-
-
-import './globals.css'

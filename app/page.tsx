@@ -1,135 +1,111 @@
-"use client"
-
-import { useEffect, useRef, useState } from "react"
-import { useScroll } from "framer-motion"
-
-import { useMobile } from "@/hooks/use-mobile"
-
-import { Header } from "@/components/navigation/header"
-import { Footer } from "@/components/navigation/footer"
-import { HeroSection } from "@/components/sections/hero-section"
-import { AboutSection } from "@/components/sections/about-section"
-import { SkillsSection } from "@/components/sections/skills-section"
-import { ProjectsSection } from "@/components/sections/projects-section"
-import { TestimonialsSection } from "@/components/sections/testimonials-section"
-import { ContactSection } from "@/components/sections/contact-section"
+import Navbar from "./navbar"
+import Footer from "./footer"
+import SkillsSection from "./skills-section"
+import ContactForm from "./contact-form"
+import { Button } from "@/components/ui/button"
+import { Github, Linkedin, Mail } from "lucide-react"
+import AdvancedParticles from "./components/advanced-particles"
+import AnimatedText from "./components/animated-text"
+import FloatingIcons from "./components/floating-icons"
+import ScrollReveal from "./components/scroll-reveal"
+import TechStack from "./components/tech-stack"
+import Testimonials from "./components/testimonials"
+import ProjectsCarousel from "./components/projects-carousel"
 
 export default function Home() {
-  const { scrollYProgress } = useScroll()
-  const isMobile = useMobile()
-
-  // Refs for sections to enable smooth scrolling and animations
-  const aboutRef = useRef<HTMLElement>(null)
-  const skillsRef = useRef<HTMLElement>(null)
-  const projectsRef = useRef<HTMLElement>(null)
-  const testimonialsRef = useRef<HTMLElement>(null)
-  const contactRef = useRef<HTMLElement>(null)
-
-  // Track if sections are in view for animations
-  const [aboutInView, setAboutInView] = useState(false)
-  const [skillsInView, setSkillsInView] = useState(false)
-  const [projectsInView, setProjectsInView] = useState(false)
-  const [testimonialsInView, setTestimonialsInView] = useState(false)
-  const [contactInView, setContactInView] = useState(false)
-
-  // Active section tracking for navbar
-  const [activeSection, setActiveSection] = useState("home")
-
-  // Update active section based on scroll position
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100
-
-      // Get all sections
-      const homeSection = document.getElementById("home")?.offsetTop || 0
-      const aboutSection = document.getElementById("about")?.offsetTop || 0
-      const skillsSection = document.getElementById("skills")?.offsetTop || 0
-      const projectsSection = document.getElementById("projects")?.offsetTop || 0
-      const testimonialsSection = document.getElementById("testimonials")?.offsetTop || 0
-      const contactSection = document.getElementById("contact")?.offsetTop || 0
-
-      // Determine active section
-      if (scrollPosition < aboutSection) {
-        setActiveSection("home")
-      } else if (scrollPosition < skillsSection) {
-        setActiveSection("about")
-      } else if (scrollPosition < projectsSection) {
-        setActiveSection("skills")
-      } else if (scrollPosition < testimonialsSection) {
-        setActiveSection("projects")
-      } else if (scrollPosition < contactSection) {
-        setActiveSection("testimonials")
-      } else {
-        setActiveSection("contact")
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  // Setup intersection observers for each section
-  useEffect(() => {
-    const options = { threshold: 0.2 }
-
-    const aboutObserver = new IntersectionObserver(([entry]) => setAboutInView(entry.isIntersecting), options)
-
-    const skillsObserver = new IntersectionObserver(([entry]) => setSkillsInView(entry.isIntersecting), options)
-
-    const projectsObserver = new IntersectionObserver(([entry]) => setProjectsInView(entry.isIntersecting), options)
-
-    const testimonialsObserver = new IntersectionObserver(
-      ([entry]) => setTestimonialsInView(entry.isIntersecting),
-      options,
-    )
-
-    const contactObserver = new IntersectionObserver(([entry]) => setContactInView(entry.isIntersecting), options)
-
-    if (aboutRef.current) aboutObserver.observe(aboutRef.current)
-    if (skillsRef.current) skillsObserver.observe(skillsRef.current)
-    if (projectsRef.current) projectsObserver.observe(projectsRef.current)
-    if (testimonialsRef.current) testimonialsObserver.observe(testimonialsRef.current)
-    if (contactRef.current) contactObserver.observe(contactRef.current)
-
-    return () => {
-      if (aboutRef.current) aboutObserver.unobserve(aboutRef.current)
-      if (skillsRef.current) skillsObserver.unobserve(skillsRef.current)
-      if (projectsRef.current) projectsObserver.unobserve(projectsRef.current)
-      if (testimonialsRef.current) testimonialsObserver.unobserve(testimonialsRef.current)
-      if (contactRef.current) contactObserver.unobserve(contactRef.current)
-    }
-  }, [])
-
-  // Smooth scroll function with offset adjustment for mobile
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId)
-    if (section) {
-      // Add extra offset for mobile to account for the header
-      const offset = isMobile ? 60 : 80
-      window.scrollTo({
-        top: section.offsetTop - offset,
-        behavior: "smooth",
-      })
-    }
-  }
-
   return (
-    <div className="flex min-h-screen flex-col">
-      <div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 z-50"
-        style={{ transform: `scaleX(${scrollYProgress.get()})` }}
-      />
+    <div className="min-h-screen bg-background">
+      <Navbar />
 
-      <Header activeSection={activeSection} scrollToSection={scrollToSection} scrollYProgress={scrollYProgress} />
+      {/* Hero Section */}
+      <section id="home" className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+        <AdvancedParticles />
+        <FloatingIcons />
+        <div className="container px-4 mx-auto text-center relative z-10">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <AnimatedText text="Hi, I'm Abrham" />
+          </h1>
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8">
+            <AnimatedText text="Full Stack Developer & Creative Problem Solver" className="inline-block" />
+          </p>
+          <div className="flex justify-center gap-4">
+            <Button variant="default" asChild className="animate-bounce">
+              <a href="#contact">Get in Touch</a>
+            </Button>
+            <Button variant="outline" asChild>
+              <a href="#projects">View Work</a>
+            </Button>
+          </div>
+        </div>
+      </section>
 
-      <main className="flex-1">
-        <HeroSection scrollToSection={scrollToSection} />
-        <AboutSection inView={aboutInView} reference={aboutRef} />
-        <SkillsSection inView={skillsInView} reference={skillsRef} />
-        <ProjectsSection inView={projectsInView} reference={projectsRef} />
-        <TestimonialsSection inView={testimonialsInView} reference={testimonialsRef} />
-        <ContactSection inView={contactInView} reference={contactRef} />
-      </main>
+      {/* About Section */}
+      <ScrollReveal>
+        <section id="about" className="py-20 bg-muted/50">
+          <div className="container px-4 mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-center">About Me</h2>
+            <div className="max-w-2xl mx-auto text-center">
+              <p className="text-lg text-muted-foreground mb-6">
+                I'm a passionate developer focused on creating beautiful and functional web applications. With a keen
+                eye for design and a love for clean code, I bring ideas to life through technology. I've worked on
+                diverse projects ranging from agricultural management systems to fuel discovery platforms and enterprise
+                rent management solutions.
+              </p>
+              <div className="flex justify-center gap-4">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                  <Button variant="ghost" size="icon" className="hover:scale-110 transition-transform">
+                    <Github className="h-5 w-5" />
+                  </Button>
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                  <Button variant="ghost" size="icon" className="hover:scale-110 transition-transform">
+                    <Linkedin className="h-5 w-5" />
+                  </Button>
+                </a>
+                <a href="mailto:abrhambest7@gmail.com">
+                  <Button variant="ghost" size="icon" className="hover:scale-110 transition-transform">
+                    <Mail className="h-5 w-5" />
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
+
+      {/* Skills Section */}
+      <ScrollReveal>
+        <SkillsSection />
+      </ScrollReveal>
+
+      <TechStack />
+
+      {/* Add Testimonials section before Projects */}
+      <ScrollReveal>
+        <Testimonials />
+      </ScrollReveal>
+
+      {/* Projects Section - Using Carousel */}
+      <ScrollReveal>
+        <section id="projects" className="py-20">
+          <div className="container px-4 mx-auto">
+            <h2 className="text-3xl font-bold mb-12 text-center">Featured Projects</h2>
+            <ProjectsCarousel />
+          </div>
+        </section>
+      </ScrollReveal>
+
+      {/* Contact Section */}
+      <ScrollReveal>
+        <section id="contact" className="py-20 bg-muted/50">
+          <div className="container px-4 mx-auto">
+            <h2 className="text-3xl font-bold mb-12 text-center">Get in Touch</h2>
+            <div className="max-w-md mx-auto">
+              <ContactForm />
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
 
       <Footer />
     </div>
