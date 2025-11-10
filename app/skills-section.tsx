@@ -1,3 +1,5 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 
@@ -54,38 +56,54 @@ const skills = [
   },
   {
     name: "AWS",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg",
+    icon: "https://i.scdn.co/image/ab6765630000ba8a49f81331af04ec3614a5a741",
     level: "Intermediate",
   },
   {
     name: "TailwindCSS",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg",
+    icon: "https://wpdean.com/wp-content/uploads/2024/05/how-to-use-tailwind.jpg",
     level: "Advanced",
   },
 ]
 
+// Duplicate skills for seamless infinite scroll
+const duplicatedSkills = [...skills, ...skills]
+
 export default function SkillsSection() {
   return (
-    <section id="skills" className="py-20 bg-muted/50">
+    <section id="skills" className="py-20 bg-muted/50 overflow-hidden">
       <div className="container px-4 mx-auto">
         <h2 className="text-3xl font-bold mb-12 text-center">Technical Skills</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-          {skills.map((skill) => (
-            <Card key={skill.name} className="group hover:shadow-lg transition-all duration-300">
-              <CardContent className="p-6 text-center">
-                <div className="relative w-12 h-12 mx-auto mb-4">
-                  <Image
-                    src={skill.icon || "/placeholder.svg"}
-                    alt={skill.name}
-                    fill
-                    className="object-contain group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-                <h3 className="font-medium mb-1">{skill.name}</h3>
-                <p className="text-sm text-muted-foreground">{skill.level}</p>
-              </CardContent>
-            </Card>
-          ))}
+        
+        {/* Infinite Scrolling Carousel */}
+        <div className="relative">
+          {/* Gradient overlays for fade effect */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-muted/50 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-muted/50 to-transparent z-10 pointer-events-none" />
+          
+          <div className="overflow-hidden">
+            <div className="flex animate-scroll gap-6">
+              {duplicatedSkills.map((skill, index) => (
+                <Card
+                  key={`${skill.name}-${index}`}
+                  className="group flex-shrink-0 w-[200px] hover:shadow-xl transition-all duration-300 hover:scale-105"
+                >
+                  <CardContent className="p-6 text-center">
+                    <div className="relative w-16 h-16 mx-auto mb-4">
+                      <Image
+                        src={skill.icon || "/placeholder.svg"}
+                        alt={skill.name}
+                        fill
+                        className="object-contain group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                    <h3 className="font-semibold mb-2 text-lg">{skill.name}</h3>
+                    <p className="text-sm text-muted-foreground">{skill.level}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

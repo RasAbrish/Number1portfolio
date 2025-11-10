@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -11,6 +11,7 @@ export default function ContactForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [isSent, setIsSent] = useState(false)
   const [message, setMessage] = useState("")
+  const formRef = useRef<HTMLFormElement>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -18,7 +19,8 @@ export default function ContactForm() {
     setMessage("")
 
     try {
-      const formData = new FormData(e.currentTarget)
+      const form = e.currentTarget
+      const formData = new FormData(form)
       const name = formData.get("name")
       const email = formData.get("email")
       const subject = formData.get("subject")
@@ -37,26 +39,29 @@ export default function ContactForm() {
         }),
       })
 
-      if (response.ok) {
+      const result = await response.json()
+
+      if (response.ok && result.success) {
         setMessage("Message sent successfully to abrhambest7@gmail.com!")
         setIsSent(true)
-        e.currentTarget.reset()
+        form.reset()
         setTimeout(() => {
           setIsSent(false)
           setMessage("")
         }, 4000)
       } else {
-        setMessage("Failed to send message. Please try again.")
+        setMessage(result.message || "Failed to send message. Please try again.")
       }
     } catch (error) {
-      setMessage("Failed to send message. Please try again.")
+      console.error("Contact form error:", error)
+      setMessage("Network error. Please check your connection and try again.")
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
       {message && (
         <div
           className={`flex items-center gap-2 p-4 border rounded-lg ${
