@@ -11,6 +11,7 @@ import ScrollReveal from "./components/scroll-reveal"
 import TechStack from "./components/tech-stack"
 import Testimonials from "./components/testimonials"
 import ProjectsCarousel from "./components/projects-carousel"
+import ScrollDownIndicator from "./components/scroll-down-indicator"
 
 export default function Home() {
   return (
@@ -37,6 +38,7 @@ export default function Home() {
             </Button>
           </div>
         </div>
+        <ScrollDownIndicator />
       </section>
 
       <ScrollReveal>
