@@ -71,7 +71,7 @@ const container = {
       staggerChildren: 0.1,
     },
   },
-}
+} as const
 
 const item = {
   hidden: { y: 20, opacity: 0 },
@@ -84,7 +84,7 @@ const item = {
       damping: 10,
     },
   },
-}
+} as const
 
 export default function TechStack() {
   const ref = useRef(null)
