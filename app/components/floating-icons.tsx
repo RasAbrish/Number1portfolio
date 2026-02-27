@@ -44,6 +44,20 @@ export default function FloatingIcons() {
     },
   ])
 
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 20, // -10 to 10
+        y: (e.clientY / window.innerHeight - 0.5) * 20, // -10 to 10
+      })
+    }
+
+    window.addEventListener("mousemove", handleMouseMove)
+    return () => window.removeEventListener("mousemove", handleMouseMove)
+  }, [])
+
   useEffect(() => {
     let animationFrameId: number
 
@@ -70,8 +84,8 @@ export default function FloatingIcons() {
           style={{
             left: `${icon.x}%`,
             top: `${icon.y}%`,
-            transform: `translate(-50%, -50%) translateY(${Math.sin(icon.phase) * icon.amplitude}px)`,
-            transition: "transform 0.1s ease-out",
+            transform: `translate(calc(-50% + ${mousePos.x * (index + 2) * -0.5}px), calc(-50% + ${mousePos.y * (index + 2) * -0.5}px)) translateY(${Math.sin(icon.phase) * icon.amplitude}px)`,
+            transition: "transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)",
           }}
         >
           <Image src={icon.src || "/placeholder.svg"} alt={icon.alt} width={48} height={48} className="opacity-20" />

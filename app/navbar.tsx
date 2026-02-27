@@ -76,9 +76,8 @@ export default function Navbar() {
 
   const navItems = [
     { id: "home", label: "Home" },
-    { id: "about", label: "About" },
-    { id: "skills", label: "Skills" },
-    { id: "testimonials", label: "Testimonials" },
+    { id: "about", label: "About Me" },
+    { id: "skills", label: "Experience" },
     { id: "projects", label: "Projects" },
     { id: "contact", label: "Contact" },
   ]
@@ -106,7 +105,7 @@ export default function Navbar() {
               height={32}
               className="rounded-full"
             />
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
+            <span className="text-2xl font-serif font-medium text-foreground tracking-tight py-1">
               Abrham Ababu
             </span>
           </Link>
@@ -127,7 +126,7 @@ export default function Navbar() {
               >
                 {item.label}
                 {activeSection === item.id && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-primary/50 rounded-full"></span>
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"></span>
                 )}
               </Link>
             ))}

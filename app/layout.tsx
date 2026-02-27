@@ -1,8 +1,8 @@
-import type React from "react"
 import "@/styles/globals.css"
-import { Inter } from "next/font/google"
+import { Inter, DM_Serif_Display } from "next/font/google"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+const dmSerif = DM_Serif_Display({ weight: "400", subsets: ["latin"], variable: "--font-serif" })
 
 export const metadata = {
   title: "Abrham - Portfolio",
@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.variable} ${dmSerif.variable} font-sans`}>{children}</body>
     </html>
   )
 }

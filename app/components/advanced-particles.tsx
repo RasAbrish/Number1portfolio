@@ -153,16 +153,26 @@ class Effect {
 
   updateParticle(particle: Particle) {
     // Enhanced mouse interaction
-    if (this.mouse.pressed) {
-      const dx = this.mouse.x - particle.x
-      const dy = this.mouse.y - particle.y
-      const distance = Math.sqrt(dx * dx + dy * dy)
-      const force = (this.mouse.pressed ? 10 : 5) / particle.density
+    const mouseDx = this.mouse.x - particle.x
+    const mouseDy = this.mouse.y - particle.y
+    const distance = Math.sqrt(mouseDx * mouseDx + mouseDy * mouseDy)
+    const hoverRadius = 150
 
-      if (distance < 150) {  // Larger interaction radius
-        const angle = Math.atan2(dy, dx)
-        particle.x -= Math.cos(angle) * force
-        particle.y -= Math.sin(angle) * force
+    if (distance < hoverRadius) {
+      const forceDirectionX = mouseDx / distance
+      const forceDirectionY = mouseDy / distance
+      const force = (hoverRadius - distance) / hoverRadius
+      const directionX = forceDirectionX * force * particle.density * 0.6
+      const directionY = forceDirectionY * force * particle.density * 0.6
+
+      if (this.mouse.pressed) {
+        // Stronger repulsion on click
+        particle.x -= directionX * 5
+        particle.y -= directionY * 5
+      } else {
+        // Gentle repulsion on hover
+        particle.x -= directionX
+        particle.y -= directionY
       }
     }
 

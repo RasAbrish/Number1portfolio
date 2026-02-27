@@ -71,9 +71,11 @@ const duplicatedSkills = [...skills, ...skills]
 
 export default function SkillsSection() {
   return (
-    <section id="skills" className="py-20 bg-muted/50 overflow-hidden">
+    <section id="skills" className="py-20 border-t border-border/50 bg-background overflow-hidden">
       <div className="container px-4 mx-auto">
-        <h2 className="text-3xl font-bold mb-12 text-center">Technical Skills</h2>
+        <h2 className="text-4xl md:text-5xl font-serif mb-16 text-center">
+          Work & <span className="text-primary italic">Expertise</span>
+        </h2>
         
         {/* Infinite Scrolling Carousel */}
         <div className="relative">

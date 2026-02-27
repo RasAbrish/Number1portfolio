@@ -30,6 +30,15 @@ export default function ParticleBackground() {
       opacity: number
 
       constructor() {
+        if (!canvas) {
+          this.x = 0
+          this.y = 0
+          this.size = 0
+          this.speedX = 0
+          this.speedY = 0
+          this.opacity = 0
+          return
+        }
         this.x = Math.random() * canvas.width
         this.y = Math.random() * canvas.height
         this.size = Math.random() * 2 + 0.1
@@ -39,6 +48,7 @@ export default function ParticleBackground() {
       }
 
       update() {
+        if (!canvas) return
         this.x += this.speedX
         this.y += this.speedY
 
@@ -66,7 +76,7 @@ export default function ParticleBackground() {
 
     // Animation loop
     function animate() {
-      if (!ctx) return
+      if (!ctx || !canvas) return
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       particleArray.forEach((particle) => {

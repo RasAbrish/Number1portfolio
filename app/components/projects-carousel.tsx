@@ -21,6 +21,17 @@ interface Project {
 
 const projects: Project[] = [
   {
+    id: 0,
+    title: "Headless CMS",
+    description: "Modern, high-performance Headless Content Management System.",
+    longDescription: "Developed a modern, high-performance Headless CMS that fulfills requirements for a technical assessment. Features robust content management, user administration, and a dashboard overview.",
+    tags: ["React", "TypeScript", "Next.js", "Full Stack"],
+    link: "https://abels-porfolio.vercel.app/",
+    company: "elisoftsolution",
+    role: "Full Stack Developer",
+    image: "/cmc.png", 
+  },
+  {
     id: 1,
     title: "Agriculture Management System",
     description:
@@ -72,6 +83,20 @@ const projects: Project[] = [
     duration: "5 months",
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Dy18cKbUzCfD6eQPz9a4Q6gnRzqYIf.png",
   },
+   {
+    id: 5,
+    title: "AAHRAMS",
+    description: "Enterprise house rental agreement management platform for Addis Ababa City, privately deployed and presented to a city sub-administration",
+    longDescription:
+      "Developed an end-to-end full-stack system to digitize house rental agreement management in Addis Ababa City, replacing manual workflows with a secure digital solution. Built using React (frontend), Node.js (backend), Zod for validation, and Docker for containerization, the system improves transparency, efficiency, and data management and has been presented to a city sub-administration for real-world adoption.",
+    tags: ["React", "TypeScript", "Node.js", "PostgreSQL", "Tailwind CSS"],
+    link: "https://aahrams.onrender.com/",
+    company: "AAHAMS",
+    role: "Fullstack Developer",
+    duration: "6 months",
+    image: "/AAS.png",
+  },
+
 ]
 
 export default function ProjectsCarousel() {
