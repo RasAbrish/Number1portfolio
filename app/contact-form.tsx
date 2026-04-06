@@ -78,25 +78,25 @@ export default function ContactForm() {
         <label htmlFor="name" className="text-sm font-medium">
           Name
         </label>
-        <Input id="name" name="name" required />
+        <Input id="name" name="name" placeholder="Your full name" required />
       </div>
       <div className="space-y-2">
         <label htmlFor="email" className="text-sm font-medium">
           Email
         </label>
-        <Input id="email" name="email" type="email" required />
+        <Input id="email" name="email" type="email" placeholder="you@example.com" required />
       </div>
       <div className="space-y-2">
         <label htmlFor="subject" className="text-sm font-medium">
           Subject
         </label>
-        <Input id="subject" name="subject" required />
+        <Input id="subject" name="subject" placeholder="What is this about?" required />
       </div>
       <div className="space-y-2">
         <label htmlFor="message" className="text-sm font-medium">
           Message
         </label>
-        <Textarea id="message" name="message" className="min-h-[150px]" required />
+        <Textarea id="message" name="message" placeholder="Tell me about your project..." className="min-h-[150px]" required />
       </div>
       <Button type="submit" className="w-full" disabled={isLoading}>
         {isLoading ? (

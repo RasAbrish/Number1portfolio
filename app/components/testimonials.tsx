@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react"
+import { useRef, useState } from "react"
+import { Quote } from "lucide-react"
+import { motion, useAnimationFrame, useMotionValue, useTransform } from "framer-motion"
 
 const testimonials = [
   {
@@ -28,136 +29,73 @@ const testimonials = [
 ]
 
 export default function Testimonials() {
-  const [current, setCurrent] = useState(0)
-  const [isPlaying, setIsPlaying] = useState(true)
-  const [isVisible, setIsVisible] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const baseVelocity = -1 // px per frame
+  const x = useMotionValue(0)
 
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
+  // Duplicating a lot to avoid blank spaces
+  const items = [...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials]
 
-  useEffect(() => {
-    if (!isPlaying) return
-
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % testimonials.length)
-    }, 6000)
-
-    return () => clearInterval(timer)
-  }, [isPlaying])
-
-  const next = () => {
-    setCurrent((prev) => (prev + 1) % testimonials.length)
-    setIsPlaying(false)
-  }
-
-  const prev = () => {
-    setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-    setIsPlaying(false)
-  }
+  useAnimationFrame((t, delta) => {
+    // If hovered, slow down the velocity by 80%
+    const velocity = isHovered ? baseVelocity * 0.15 : baseVelocity
+    let moveBy = velocity * (delta / 16)
+    
+    // Reset position if it goes too far left
+    // We assume each card + gap is roughly 350 + 24 = 374px
+    // 3 items per original array = 1122px
+    if (x.get() <= -1122) {
+      x.set(0)
+    } else {
+      x.set(x.get() + moveBy)
+    }
+  })
 
   return (
-    <section id="testimonials" className="py-20 bg-gradient-to-b from-background to-muted/50">
-      <div className="container px-4 mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">What People Say</h2>
-        <p className="text-center text-muted-foreground mb-12">Testimonials from colleagues and clients</p>
+    <section id="testimonials" className="py-24 bg-background overflow-hidden relative border-t border-border/50">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none" />
+      
+      <div className="container px-4 mx-auto relative z-10 mb-16">
+        <h2 className="text-3xl md:text-5xl font-serif text-center tracking-tight mb-4">
+          What People <span className="text-primary italic">Say</span>
+        </h2>
+        <p className="text-center text-muted-foreground text-lg">Trusted by industry professionals and colleagues</p>
+      </div>
 
-        <div className="max-w-3xl mx-auto relative">
-          {/* Main Testimonial Card */}
-          <div className="relative" onMouseEnter={() => setIsPlaying(false)} onMouseLeave={() => setIsPlaying(true)}>
+      <div className="relative flex w-full max-w-[100vw] overflow-hidden">
+        {/* Left and Right Fade Gradients */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+        <motion.div 
+          className="flex gap-6 px-3"
+          style={{ x }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {items.map((testimonial, index) => (
             <div
-              className={`bg-background rounded-xl shadow-xl p-8 md:p-12 border border-muted transition-all duration-700 transform ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
+              key={index}
+              className="w-[350px] md:w-[450px] flex-shrink-0 bg-background/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border hover:border-primary/50 transition-colors group shadow-sm hover:shadow-md"
             >
-              {/* Quote Icon */}
-              <Quote className="w-8 h-8 text-primary/30 mb-6" />
-
-              {/* Content */}
-              <div className="space-y-6">
-                <blockquote className="text-lg md:text-xl italic text-foreground leading-relaxed">
-                  "{testimonials[current].content}"
-                </blockquote>
-
-                {/* Author Info */}
-                <div className="pt-6 border-t border-muted">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary/50 flex items-center justify-center text-2xl font-bold text-primary-foreground">
-                      {testimonials[current].name[0]}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-lg text-foreground">{testimonials[current].name}</h4>
-                      <p className="text-primary text-sm">{testimonials[current].role}</p>
-                      <p className="text-muted-foreground text-xs">{testimonials[current].company}</p>
-                    </div>
-                  </div>
+              <Quote className="w-8 h-8 text-primary/20 mb-4 group-hover:text-primary/40 transition-colors" />
+              <blockquote className="text-base text-foreground/90 leading-relaxed mb-8 h-[120px] overflow-hidden text-ellipsis">
+                "{testimonial.content}"
+              </blockquote>
+              <div className="flex items-center gap-4 pt-4 border-t border-border/50">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-lg font-semibold text-primary">
+                  {testimonial.name.charAt(0)}
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground tracking-tight">{testimonial.name}</h4>
+                  <p className="text-primary text-xs font-medium uppercase tracking-wider">{testimonial.role}</p>
+                  <p className="text-muted-foreground text-xs mt-0.5">{testimonial.company}</p>
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Navigation Controls */}
-          <div className="flex justify-center items-center gap-6 mt-8">
-            <button
-              onClick={prev}
-              className="p-2 rounded-full hover:bg-muted transition-colors duration-300 hover:scale-110"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-
-            {/* Progress Indicators */}
-            <div className="flex gap-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setCurrent(index)
-                    setIsPlaying(false)
-                  }}
-                  className={`transition-all duration-300 rounded-full ${
-                    index === current ? "w-8 h-2 bg-primary" : "w-2 h-2 bg-primary/30 hover:bg-primary/50"
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={next}
-              className="p-2 rounded-full hover:bg-muted transition-colors duration-300 hover:scale-110"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
-
-          {/* Auto-play indicator */}
-          <div className="text-center mt-6">
-            <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
-              <div
-                className={`h-full bg-primary transition-all duration-200 ${
-                  isPlaying ? "w-full animate-pulse" : "w-0"
-                }`}
-                style={{
-                  animation: isPlaying ? "progress 6s linear infinite" : "none",
-                }}
-              />
-            </div>
-          </div>
-        </div>
+          ))}
+        </motion.div>
       </div>
-
-      <style jsx>{`
-        @keyframes progress {
-          from {
-            width: 0%;
-          }
-          to {
-            width: 100%;
-          }
-        }
-      `}</style>
     </section>
   )
 }
