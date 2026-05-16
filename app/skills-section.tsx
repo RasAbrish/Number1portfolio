@@ -1,168 +1,168 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 import { motion, useAnimationFrame, useMotionValue } from "framer-motion"
 
-const skills = [
-  {
-    name: "JavaScript",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
-    level: "Advanced",
-  },
-  {
-    name: "TypeScript",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
-    level: "Advanced",
-  },
-  {
-    name: "React",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-    level: "Advanced",
-  },
-  {
-    name: "Next.js",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
-    level: "Advanced",
-  },
-  {
-    name: "Node.js",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
-    level: "Intermediate",
-  },
-  {
-    name: "Python",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
-    level: "Intermediate",
-  },
-  {
-    name: "MongoDB",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
-    level: "Intermediate",
-  },
-  {
-    name: "PostgreSQL",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
-    level: "Intermediate",
-  },
-  {
-    name: "Docker",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
-    level: "Intermediate",
-  },
-  {
-    name: "Git",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
-    level: "Advanced",
-  },
-  {
-    name: "AWS",
-    icon: "https://i.scdn.co/image/ab6765630000ba8a49f81331af04ec3614a5a741",
-    level: "Intermediate",
-  },
-  {
-    name: "TailwindCSS",
-    icon: "https://wpdean.com/wp-content/uploads/2024/05/how-to-use-tailwind.jpg",
-    level: "Advanced",
-  },
+type Tool = {
+  name: string
+  icon: string
+}
+
+const toolsRowOne: Tool[] = [
+  { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+  { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
+  { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+  { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
+  { name: "C++", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" },
+  { name: "PHP", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" },
+  { name: "HTML5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
+  { name: "CSS3", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
+  { name: "Next.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
+  { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+  { name: "Tailwind", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" },
+  { name: "ShadCN", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/shadcnui.svg" },
+  { name: "Redux", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redux/redux-original.svg" },
+  { name: "Sass", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" },
+  { name: "Bootstrap", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" },
+  { name: "Figma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" },
 ]
 
-// Duplicate skills heavily for seamless infinite scroll
-const duplicatedSkills = [...skills, ...skills, ...skills, ...skills]
+const toolsRowTwo: Tool[] = [
+  { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
+  { name: "NestJS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nestjs/nestjs-original.svg" },
+  { name: "Express", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" },
+  { name: "Laravel", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" },
+  { name: "Prisma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" },
+  { name: "GraphQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg" },
+  { name: "PostgreSQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
+  { name: "MySQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
+  { name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
+  { name: "Redis", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" },
+  { name: "Docker", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
+  { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
+  { name: "GitHub Actions", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/githubactions.svg" },
+  { name: "Linux", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" },
+  { name: "Vercel", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/vercel.svg" },
+  { name: "Netlify", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/netlify.svg" },
+  { name: "n8n", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/n8n.svg" },
+  { name: "Cloudflare", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/cloudflare.svg" },
+  { name: "Nginx", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" },
+  { name: "Postman", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg" },
+  { name: "ngrok", icon: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/ngrok.svg" },
+  { name: "AWS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
+]
+
+const CHIP_WIDTH = 188
+const TOOL_GAP = 20
+const ROW_ONE_LOOP_WIDTH = toolsRowOne.length * (CHIP_WIDTH + TOOL_GAP)
+const ROW_TWO_LOOP_WIDTH = toolsRowTwo.length * (CHIP_WIDTH + TOOL_GAP)
+const duplicatedRowOne = [...toolsRowOne, ...toolsRowOne, ...toolsRowOne]
+const duplicatedRowTwo = [...toolsRowTwo, ...toolsRowTwo, ...toolsRowTwo]
+
+function ToolRow({
+  tools,
+  x,
+  onMouseEnter,
+  onMouseLeave,
+}: {
+  tools: Tool[]
+  x: ReturnType<typeof useMotionValue<number>>
+  onMouseEnter: () => void
+  onMouseLeave: () => void
+}) {
+  return (
+    <div className="overflow-hidden py-5">
+      <motion.div className="flex w-max gap-5 px-4" style={{ x }} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        {tools.map((tool, index) => (
+          <motion.div
+            key={`${tool.name}-${index}`}
+            whileHover={{ y: -2 }}
+            transition={{ type: "spring", stiffness: 220, damping: 20 }}
+            className="group flex h-14 w-[188px] flex-shrink-0 items-center gap-4 px-2"
+            title={tool.name}
+          >
+            <div className="relative h-9 w-9">
+              <Image
+                src={tool.icon || "/placeholder.svg"}
+                alt={tool.name}
+                fill
+                className="object-contain grayscale group-hover:grayscale-0 transition-all"
+                unoptimized
+              />
+            </div>
+            <span className="text-base font-medium text-foreground/80">{tool.name}</span>
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  )
+}
 
 export default function SkillsSection() {
-  const [isHovered, setIsHovered] = useState(false)
-  const baseVelocity = -1.5 // px per frame
-  const x = useMotionValue(0)
+  const [isRowOneHovered, setIsRowOneHovered] = useState(false)
+  const [isRowTwoHovered, setIsRowTwoHovered] = useState(false)
 
-  useAnimationFrame((t, delta) => {
-    // Smoothly decelerate on hover to a comfortable reading speed
-    const velocity = isHovered ? baseVelocity * 0.15 : baseVelocity
-    let moveBy = velocity * (delta / 16)
-    
-    // Width of one complete native array
-    // 12 items * (200px width + 24px gap) = 2688
-    if (x.get() <= -2688) {
-      x.set(0)
+  const xRowOne = useMotionValue(0)
+  const xRowTwo = useMotionValue(-ROW_TWO_LOOP_WIDTH)
+
+  useAnimationFrame((_, delta) => {
+    const baseOne = -0.95
+    const baseTwo = 0.95
+    const v1 = isRowOneHovered ? baseOne * 0.18 : baseOne
+    const v2 = isRowTwoHovered ? baseTwo * 0.18 : baseTwo
+
+    const moveOne = v1 * (delta / 16)
+    const moveTwo = v2 * (delta / 16)
+
+    if (xRowOne.get() <= -ROW_ONE_LOOP_WIDTH) {
+      xRowOne.set(0)
     } else {
-      x.set(x.get() + moveBy)
+      xRowOne.set(xRowOne.get() + moveOne)
+    }
+
+    if (xRowTwo.get() >= 0) {
+      xRowTwo.set(-ROW_TWO_LOOP_WIDTH)
+    } else {
+      xRowTwo.set(xRowTwo.get() + moveTwo)
     }
   })
 
   return (
-    <section id="skills" className="py-32 border-t border-border/50 bg-background overflow-hidden relative">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none" />
+    <section id="skills" className="relative overflow-hidden border-t border-border/50 bg-background py-28">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
 
-      <div className="container px-4 mx-auto relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+      <div className="container relative z-10 mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, type: "spring" }}
-          className="text-center mb-16"
+          transition={{ duration: 0.5 }}
+          className="mb-10 text-center"
         >
-          <h2 className="text-4xl md:text-6xl font-serif mb-4">
-            Programming <span className="text-primary italic">Arsenal</span>
+          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">Favorite Tools</p>
+          <h2 className="mb-4 text-4xl font-serif md:text-6xl">
+            My <span className="text-primary italic">Technologies</span>
           </h2>
-          <p className="text-muted-foreground text-xl max-w-2xl mx-auto">
-            The core technologies I utilize to build modern, high-performance web applications.
-          </p>
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">Languages, frameworks, and platforms I use across full-stack products.</p>
         </motion.div>
-        
-        {/* Infinite Scrolling Carousel */}
-        <div className="relative">
-          {/* Gradient overlays for fade effect */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-          
-          <div className="overflow-hidden py-8">
-            <motion.div 
-              className="flex gap-6 w-max px-4 cursor-pointer"
-              style={{ x }}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
-              {duplicatedSkills.map((skill, index) => (
-                <motion.div
-                  key={`${skill.name}-${index}`}
-                  whileHover={{ 
-                    y: -15, 
-                    scale: 1.05,
-                    rotateZ: index % 2 === 0 ? 2 : -2 
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="flex-shrink-0 w-[200px]"
-                >
-                  <Card className="h-full border border-border/50 bg-muted/20 backdrop-blur-md shadow-sm hover:shadow-primary/20 hover:border-primary/50 transition-colors">
-                    <CardContent className="p-6 text-center flex flex-col items-center justify-between h-full">
-                      <motion.div 
-                        className="relative w-20 h-20 mb-6 drop-shadow-xl"
-                        whileHover={{ rotate: 360 }}
-                        transition={{ duration: 0.8, ease: "easeInOut" }}
-                      >
-                        <Image
-                          src={skill.icon || "/placeholder.svg"}
-                          alt={skill.name}
-                          fill
-                          className="object-contain"
-                        />
-                      </motion.div>
-                      
-                      <div className="w-full">
-                        <h3 className="font-bold text-foreground text-xl tracking-tight mb-2">
-                          {skill.name}
-                        </h3>
-                        <div className="px-3 py-1 bg-primary/10 text-primary rounded-full inline-block text-xs font-bold uppercase tracking-widest shadow-inner">
-                          {skill.level}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+
+        <div className="relative border-y border-border/60">
+          <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-20 bg-gradient-to-r from-background to-transparent" />
+          <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-20 bg-gradient-to-l from-background to-transparent" />
+
+          <ToolRow
+            tools={duplicatedRowOne}
+            x={xRowOne}
+            onMouseEnter={() => setIsRowOneHovered(true)}
+            onMouseLeave={() => setIsRowOneHovered(false)}
+          />
+          <ToolRow
+            tools={duplicatedRowTwo}
+            x={xRowTwo}
+            onMouseEnter={() => setIsRowTwoHovered(true)}
+            onMouseLeave={() => setIsRowTwoHovered(false)}
+          />
         </div>
       </div>
     </section>

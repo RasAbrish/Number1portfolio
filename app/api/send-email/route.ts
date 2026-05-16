@@ -1,8 +1,27 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { Resend } from "resend"
+import nodemailer from "nodemailer"
 
-const resendApiKey = process.env.RESEND_API_KEY
-const resend = resendApiKey ? new Resend(resendApiKey) : null
+const CONTACT_RECIPIENT = process.env.CONTACT_RECIPIENT || "abrhambest7@gmail.com"
+
+const smtpHost = process.env.MAIL_HOST
+const smtpPort = Number(process.env.MAIL_PORT || "465")
+const smtpUser = process.env.MAIL_USERNAME
+const smtpPass = process.env.MAIL_PASSWORD
+const fromAddress = process.env.MAIL_FROM_ADDRESS || smtpUser || CONTACT_RECIPIENT
+const fromName = process.env.MAIL_FROM_NAME || "Portfolio Contact"
+
+const transporter =
+  smtpHost && smtpUser && smtpPass
+    ? nodemailer.createTransport({
+        host: smtpHost,
+        port: smtpPort,
+        secure: process.env.MAIL_ENCRYPTION === "ssl" || smtpPort === 465,
+        auth: {
+          user: smtpUser,
+          pass: smtpPass,
+        },
+      })
+    : null
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,12 +38,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if Resend API key is configured
-    if (!resendApiKey || !resend) {
-      console.error("RESEND_API_KEY is not configured")
-      // Fallback: Log the email details (for development)
+    // Check if SMTP configuration is present
+    if (!transporter) {
+      console.error("SMTP is not configured correctly")
       console.log("Email would be sent:", {
-        to: "abrhambest7@gmail.com",
+        to: CONTACT_RECIPIENT,
         from: email,
         name,
         subject,
@@ -34,17 +52,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: "Email service is not configured. Please contact the site administrator.",
+          message: "Email service is not configured. Check MAIL_HOST, MAIL_PORT, MAIL_USERNAME, and MAIL_PASSWORD.",
         },
         { status: 500 },
       )
     }
 
-    // Send email using Resend
-    const { data, error } = await resend.emails.send({
-      from: "Portfolio Contact <onboarding@resend.dev>", // You can change this after verifying your domain
-      to: ["abrhambest7@gmail.com"],
-      replyTo: email,
+    // Send email using SMTP (Gmail)
+    await transporter.sendMail({
+      from: `"${fromName}" <${fromAddress}>`,
+      to: CONTACT_RECIPIENT,
+      replyTo: String(email),
       subject: `Portfolio Contact: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -77,18 +95,7 @@ ${message}
       `,
     })
 
-    if (error) {
-      console.error("Resend error:", error)
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Failed to send email. Please try again later.",
-        },
-        { status: 500 },
-      )
-    }
-
-    console.log("Email sent successfully:", data)
+    console.log("Email sent successfully via SMTP to:", CONTACT_RECIPIENT)
 
     return NextResponse.json(
       {

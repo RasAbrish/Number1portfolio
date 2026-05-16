@@ -2,52 +2,39 @@
 
 import { motion } from "framer-motion"
 import ContactForm from "../contact-form"
-import { Mail, MapPin, Clock } from "lucide-react"
+import { Mail, MapPin } from "lucide-react"
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="py-32 bg-background relative overflow-hidden">
-      {/* Subtle grid pattern background */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-        }}
-      />
-      {/* Radial glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
-
+    <section id="contact" className="bg-background py-24">
       <div className="container px-4 mx-auto relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, type: "spring" }}
-          className="text-center mb-16"
+          transition={{ duration: 0.55 }}
+          className="mx-auto mb-12 max-w-3xl text-center"
         >
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-4 opacity-70">Contact</p>
-          <h2 className="text-4xl md:text-6xl font-serif tracking-tight mb-5">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-primary">Contact</p>
+          <h2 className="mb-5 text-4xl font-serif tracking-tight md:text-6xl">
             Get in <span className="text-primary italic">Touch</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Have a project in mind? I'd love to hear about it. Let's build something great together.
+          <p className="mx-auto max-w-2xl text-base text-muted-foreground">
+            Have a project in mind? Send me a message.
           </p>
         </motion.div>
 
-        <div className="max-w-5xl mx-auto grid md:grid-cols-[1fr,1.6fr] gap-10 items-start">
-          {/* Left Info Cards */}
+        <div className="mx-auto grid max-w-6xl items-stretch gap-6 lg:grid-cols-2">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, type: "spring", bounce: 0.3 }}
+            transition={{ duration: 0.55 }}
             className="space-y-4"
           >
             {[
               { icon: Mail, title: "Email", value: "abrhambest7@gmail.com", href: "mailto:abrhambest7@gmail.com" },
               { icon: MapPin, title: "Location", value: "Addis Ababa, Ethiopia", href: "#" },
-              { icon: Clock, title: "Availability", value: "Open to new opportunities", href: "#" },
             ].map((item, idx) => {
               const Icon = item.icon
               return (
@@ -57,18 +44,17 @@ export default function ContactSection() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1, type: "spring", stiffness: 200 }}
-                  whileHover={{ x: 4 }}
-                  className="flex items-center gap-5 p-5 rounded-2xl border border-border bg-card hover:border-primary/40 transition-all duration-300 group"
+                  transition={{ delay: idx * 0.08, duration: 0.45 }}
+                  className="group flex min-h-[92px] items-center gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary/40"
                 >
-                  <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary flex-shrink-0">
+                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
                     <Icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-0.5">
+                    <p className="mb-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
                       {item.title}
                     </p>
-                    <p className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">
+                    <p className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
                       {item.value}
                     </p>
                   </div>
@@ -77,13 +63,12 @@ export default function ContactSection() {
             })}
           </motion.div>
 
-          {/* Right Form */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, type: "spring", bounce: 0.3, delay: 0.1 }}
-            className="border border-border bg-card rounded-2xl p-8"
+            transition={{ duration: 0.55, delay: 0.05 }}
+            className="rounded-2xl border border-border bg-card p-6 md:p-7"
           >
             <ContactForm />
           </motion.div>

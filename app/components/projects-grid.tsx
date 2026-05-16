@@ -19,28 +19,28 @@ interface Project {
 const projects: Project[] = [
   {
     id: 0,
-    title: "Headless CMS",
-    description: "Modern, high-performance Headless CMS with robust content management and user administration.",
+    title: "Headless CMS Platform",
+    description: "Built a modular CMS with role-based access and structured content workflows for production-ready publishing.",
     tags: ["React", "TypeScript", "Next.js"],
-    link: "https://abels-porfolio.vercel.app/",
+    link: "https://cmc-project-cx9u.vercel.app/login",
     company: "Elisoft Solution",
     role: "Full Stack Developer",
-    image: "/cmc.png",
+    image: "/assets/images/cmc-dashboard.png",
   },
   {
     id: 6,
     title: "Elisoft Solution",
-    description: "Dynamic corporate website for a software solutions company offering ERP, CRM & CMS services.",
+    description: "Delivered a fully dynamic Laravel website and supported ERP-focused software delivery for business operations.",
     tags: ["PHP", "Laravel", "MySQL", "Tailwind", "Blade"],
     link: "https://elisoftsolution.com/",
     company: "Elisoft",
     role: "Full Stack Developer",
-    image: "/elisoft.jpg",
+    image: "/placeholder.jpg",
   },
   {
     id: 3,
     title: "FuelFinder",
-    description: "Real-time fuel discovery platform — won 2nd place at Safaricom Cloud Talent 2025.",
+    description: "Real-time fuel discovery MVP from Safaricom Talent Cloud, ranked 2nd place for innovation and execution.",
     tags: ["React", "Node.js", "Redis"],
     link: "https://fuel-finder-frontend.onrender.com/",
     company: "Gebyainc",
@@ -50,7 +50,7 @@ const projects: Project[] = [
   {
     id: 4,
     title: "Rent Management",
-    description: "Enterprise-grade rent management system — property listings, tenants & payment processing.",
+    description: "Digitized housing workflows with modules for tenants, rentals, payments, and operational reporting.",
     tags: ["React", "PostgreSQL", "Node.js"],
     link: "https://www.act.com.et/",
     company: "Atlas Computer Tech",
@@ -59,8 +59,8 @@ const projects: Project[] = [
   },
   {
     id: 2,
-    title: "Yabchemicals",
-    description: "B2B import/export platform for chemical goods — connecting suppliers, distributors and customers.",
+    title: "YAB Chemicals Website",
+    description: "Designed and deployed a modern corporate web presence to improve product visibility and customer trust.",
     tags: ["React", "TypeScript", "Tailwind"],
     link: "https://www.yabchemicals.com/",
     company: "Yabchemicals",
@@ -70,7 +70,7 @@ const projects: Project[] = [
   {
     id: 5,
     title: "AAHRAMS",
-    description: "Full-stack rental agreement digitization system for Addis Ababa — presented to city sub-administration.",
+    description: "Full-stack rental agreement platform presented to Addis Ababa city stakeholders for real-world adoption.",
     tags: ["React", "Node.js", "Docker"],
     link: "https://aahrams.onrender.com/",
     company: "AAHAMS",
@@ -148,15 +148,18 @@ export default function ProjectsGrid() {
                 </AnimatePresence>
               </div>
 
-              {/* Title & Company */}
+              {/* Title, role and description */}
               <div className="flex-1 min-w-0">
                 <h3 className={`text-lg md:text-xl font-semibold tracking-tight transition-colors duration-300 ${
                   activeProject === project.id ? "text-primary" : "text-foreground"
                 }`}>
                   {project.title}
                 </h3>
-                <p className="text-sm text-muted-foreground truncate mt-0.5">
+                <p className="text-xs md:text-sm text-muted-foreground mt-0.5">
                   {project.company} · {project.role}
+                </p>
+                <p className="text-xs md:text-sm text-muted-foreground/90 mt-2 leading-relaxed line-clamp-2">
+                  {project.description}
                 </p>
               </div>
 

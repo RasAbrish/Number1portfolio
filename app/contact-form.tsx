@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Mail, Loader2, CheckCircle2 } from "lucide-react"
+import { toast } from "sonner"
 
 export default function ContactForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -17,6 +18,7 @@ export default function ContactForm() {
     e.preventDefault()
     setIsLoading(true)
     setMessage("")
+    const toastId = toast.loading("Sending your message...")
 
     try {
       const form = e.currentTarget
@@ -44,6 +46,10 @@ export default function ContactForm() {
       if (response.ok && result.success) {
         setMessage("Message sent successfully to abrhambest7@gmail.com!")
         setIsSent(true)
+        toast.success("Message sent successfully.", {
+          id: toastId,
+          description: "Delivered to abrhambest7@gmail.com",
+        })
         form.reset()
         setTimeout(() => {
           setIsSent(false)
@@ -51,10 +57,18 @@ export default function ContactForm() {
         }, 4000)
       } else {
         setMessage(result.message || "Failed to send message. Please try again.")
+        toast.error("Failed to send message.", {
+          id: toastId,
+          description: result.message || "Please try again.",
+        })
       }
     } catch (error) {
       console.error("Contact form error:", error)
       setMessage("Network error. Please check your connection and try again.")
+      toast.error("Network error.", {
+        id: toastId,
+        description: "Please check your connection and try again.",
+      })
     } finally {
       setIsLoading(false)
     }

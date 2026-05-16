@@ -3,8 +3,6 @@
 import Navbar from "./navbar"
 import Footer from "./footer"
 import SkillsSection from "./skills-section"
-import { Button } from "@/components/ui/button"
-import Image from "next/image"
 import ScrollReveal from "./components/scroll-reveal"
 import Testimonials from "./components/testimonials"
 import ProjectsGrid from "./components/projects-grid"
@@ -13,6 +11,7 @@ import FloatingCharacter from "./components/floating-character"
 import HeroSection from "./components/hero-section"
 import ContactSection from "./components/contact-section"
 import { motion } from "framer-motion"
+import { PixelImage } from "@/components/ui/pixel-image"
 
 const fadeLeft = {
   initial: { opacity: 0, x: -80 },
@@ -77,16 +76,14 @@ export default function Home() {
                 </motion.div>
 
                 {/* Photo */}
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ type: "spring", stiffness: 200 }}
-                  className="aspect-[3/4] w-[280px] rounded-3xl overflow-hidden shadow-2xl border-2 border-border/60 relative z-10"
-                >
-                  <Image
+                <motion.div whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 200 }} className="relative z-10">
+                  <PixelImage
                     src="/assets/images/profile-photo.jpg"
-                    alt="Abrham"
-                    fill
-                    className="object-cover"
+                    grid="8x8"
+                    pixelFadeInDuration={900}
+                    colorRevealDelay={1000}
+                    className="aspect-[3/4] w-[280px] h-auto md:w-[280px] md:h-auto"
+                    imageClassName="rounded-3xl"
                   />
                 </motion.div>
 
@@ -100,17 +97,17 @@ export default function Home() {
             <motion.div {...fadeRight} className="space-y-8">
               <div className="space-y-5 text-lg text-muted-foreground leading-relaxed">
                 <p>
-                  I'm a passionate full-stack developer focused on creating <span className="text-foreground font-medium">beautiful, functional web applications</span>. With a keen eye for design and a love for clean code, I bring ideas to life through technology.
+                  I’m a full-stack software developer building <span className="text-foreground font-medium">scalable web products and digital platforms</span> across ERP systems, internal tools, and customer-facing applications.
                 </p>
                 <p>
-                  I've built diverse software ranging from agricultural management systems and fuel discovery platforms to enterprise rent management solutions — always delivering <span className="text-foreground font-medium">robust architecture and exceptional user experiences</span>.
+                  My experience includes Safaricom’s Talent Cloud program, enterprise rental and agreement systems, and production websites for growing businesses, with a focus on <span className="text-foreground font-medium">clean architecture, delivery speed, and practical business impact</span>.
                 </p>
               </div>
 
               {/* Stats grid */}
               <div className="grid grid-cols-3 gap-4">
                 {[
-                  { value: "5+", label: "Years Exp." },
+                  { value: "3+", label: "Years Exp." },
                   { value: "10+", label: "Projects" },
                   { value: "5+", label: "Companies" },
                 ].map((stat, i) => (
@@ -132,11 +129,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ── Testimonials ── */}
-      <ScrollReveal>
-        <Testimonials />
-      </ScrollReveal>
 
       {/* ── My Journey ── */}
       <ScrollReveal>
@@ -161,6 +153,11 @@ export default function Home() {
       {/* ── Skills ── */}
       <ScrollReveal>
         <SkillsSection />
+      </ScrollReveal>
+
+      {/* ── Testimonials ── */}
+      <ScrollReveal>
+        <Testimonials />
       </ScrollReveal>
 
       {/* ── Contact ── */}
