@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -13,6 +13,15 @@ export default function ContactForm() {
   const [isSent, setIsSent] = useState(false)
   const [message, setMessage] = useState("")
   const formRef = useRef<HTMLFormElement>(null)
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current) {
+        clearTimeout(resetTimerRef.current)
+      }
+    }
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -51,7 +60,7 @@ export default function ContactForm() {
           description: "Delivered to abrhambest7@gmail.com",
         })
         form.reset()
-        setTimeout(() => {
+        resetTimerRef.current = setTimeout(() => {
           setIsSent(false)
           setMessage("")
         }, 4000)

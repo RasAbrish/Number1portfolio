@@ -8,10 +8,8 @@ export default function CustomCursor() {
   const [isPointer, setIsPointer] = useState(false)
   const [isDown, setIsDown] = useState(false)
 
-  const x = useSpring(0, { stiffness: 500, damping: 40, mass: 0.4 })
-  const y = useSpring(0, { stiffness: 500, damping: 40, mass: 0.4 })
-  const ringX = useSpring(0, { stiffness: 260, damping: 28, mass: 0.7 })
-  const ringY = useSpring(0, { stiffness: 260, damping: 28, mass: 0.7 })
+  const x = useSpring(0, { stiffness: 420, damping: 30, mass: 0.35 })
+  const y = useSpring(0, { stiffness: 420, damping: 30, mass: 0.35 })
 
   useEffect(() => {
     const isCoarse = window.matchMedia("(pointer: coarse)").matches
@@ -26,7 +24,7 @@ export default function CustomCursor() {
         return
       }
       const interactive = target.closest(
-        "a, button, input, textarea, select, [role='button'], [data-cursor='pointer']",
+        "a, button, input, textarea, select, label, [role='button'], [data-cursor='pointer']",
       )
       setIsPointer(Boolean(interactive))
     }
@@ -34,8 +32,6 @@ export default function CustomCursor() {
     const onMove = (e: MouseEvent) => {
       x.set(e.clientX)
       y.set(e.clientY)
-      ringX.set(e.clientX)
-      ringY.set(e.clientY)
       updatePointerState(e.target)
     }
 
@@ -57,32 +53,43 @@ export default function CustomCursor() {
       document.removeEventListener("mouseleave", onLeave)
       document.removeEventListener("mouseenter", onEnter)
     }
-  }, [ringX, ringY, x, y])
+  }, [x, y])
 
   if (!enabled) return null
 
   return (
     <>
       <motion.div
-        className="pointer-events-none fixed left-0 top-0 z-[9999] hidden h-2.5 w-2.5 rounded-full bg-primary mix-blend-screen md:block"
+        className="pointer-events-none fixed left-0 top-0 z-[9999] hidden rounded-full md:block"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}
         animate={{
-          scale: isDown ? 0.7 : isPointer ? 1.25 : 1,
-          opacity: isDown ? 0.8 : 1,
+          width: isDown ? 20 : isPointer ? 34 : 26,
+          height: isDown ? 20 : isPointer ? 34 : 26,
+          borderColor: isPointer ? "hsl(var(--primary) / 0.9)" : "hsl(var(--foreground) / 0.75)",
+          backgroundColor: isPointer ? "hsl(var(--primary) / 0.1)" : "transparent",
+          opacity: isDown ? 0.55 : 0.95,
         }}
-        transition={{ type: "spring", stiffness: 380, damping: 24 }}
-      />
+        transition={{ type: "spring", stiffness: 260, damping: 24 }}
+      >
+        <div className="h-full w-full rounded-full border" />
+      </motion.div>
+
       <motion.div
-        className="pointer-events-none fixed left-0 top-0 z-[9998] hidden rounded-full border border-primary/50 bg-primary/5 md:block"
-        style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
+        className="pointer-events-none fixed left-0 top-0 z-[10000] hidden md:block"
+        style={{ x, y, translateX: "-50%", translateY: "-50%" }}
         animate={{
-          width: isDown ? 26 : isPointer ? 38 : 30,
-          height: isDown ? 26 : isPointer ? 38 : 30,
-          opacity: isDown ? 0.55 : 0.8,
+          scale: isDown ? 0.75 : isPointer ? 1.15 : 1,
+          opacity: isDown ? 0.85 : 1,
+          color: isPointer ? "hsl(var(--primary))" : "hsl(var(--foreground))",
         }}
-        transition={{ type: "spring", stiffness: 260, damping: 22 }}
-      />
+        transition={{ type: "spring", stiffness: 300, damping: 22 }}
+      >
+        <div className="relative h-3.5 w-3.5">
+          <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-current/85" />
+          <span className="absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-current/85" />
+          <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-current" />
+        </div>
+      </motion.div>
     </>
   )
 }
-

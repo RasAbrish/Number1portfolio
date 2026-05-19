@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
+import { ArrowUpRight, Download, Mail, FolderKanban } from "lucide-react"
 import SpaceBackground from "./space-background"
 import ScrollDownIndicator from "./scroll-down-indicator"
 
@@ -34,7 +34,6 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
         >
-          {/* Status Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -48,13 +47,10 @@ export default function HeroSection() {
             Available for new opportunities
           </motion.div>
 
-          {/* Name */}
           <h1 className="text-5xl md:text-8xl font-serif tracking-tight mb-4 text-foreground">
-            Hi, I am{" "}
-            <span className="text-primary italic">Abrham.</span>
+            Hi, I am <span className="text-primary italic">Abrham.</span>
           </h1>
 
-          {/* Cycling role */}
           <div className="h-12 md:h-16 flex items-center justify-center mb-10">
             <AnimatePresence mode="wait">
               <motion.p
@@ -70,23 +66,58 @@ export default function HeroSection() {
             </AnimatePresence>
           </div>
 
-          {/* Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 items-center pointer-events-auto">
-            <Button
-              size="lg"
-              className="rounded-full px-10 py-6 text-base font-medium bg-primary hover:bg-primary/90 text-primary-foreground shadow-xl shadow-primary/20 transition-all duration-300 hover:scale-105"
-              asChild
-            >
-              <a href="#projects">Explore My Work</a>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="rounded-full px-10 py-6 text-base font-medium border-border bg-background/60 backdrop-blur-sm hover:bg-muted transition-all duration-300 hover:scale-105"
-              asChild
-            >
-              <a href="#contact">Get in Touch</a>
-            </Button>
+          <div className="pointer-events-auto mx-auto max-w-5xl">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+              <a
+                href="#projects"
+                className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/80 backdrop-blur-sm p-4 md:p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-primary/45 hover:shadow-[0_16px_35px_-22px_hsl(var(--primary)/0.95)]"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.1] via-transparent to-transparent opacity-80" />
+                <div className="relative flex items-center justify-between">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-1">Portfolio</p>
+                    <p className="text-base md:text-lg font-semibold text-foreground">Explore My Work</p>
+                  </div>
+                  <div className="rounded-xl border border-primary/30 bg-primary/10 p-2 text-primary">
+                    <FolderKanban className="h-4 w-4" />
+                  </div>
+                </div>
+              </a>
+
+              <a
+                href="#contact"
+                className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/80 backdrop-blur-sm p-4 md:p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-primary/45 hover:shadow-[0_16px_35px_-22px_hsl(var(--primary)/0.95)]"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent opacity-80" />
+                <div className="relative flex items-center justify-between">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-1">Contact</p>
+                    <p className="text-base md:text-lg font-semibold text-foreground">Get in Touch</p>
+                  </div>
+                  <div className="rounded-xl border border-primary/30 bg-primary/10 p-2 text-primary">
+                    <Mail className="h-4 w-4" />
+                  </div>
+                </div>
+              </a>
+
+              <a
+                href="/Abrham-Ababu-CV.pdf"
+                download
+                className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/80 backdrop-blur-sm p-4 md:p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-primary/45 hover:shadow-[0_16px_35px_-22px_hsl(var(--primary)/0.95)]"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent opacity-80" />
+                <div className="relative flex items-center justify-between">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-1">Resume</p>
+                    <p className="text-base md:text-lg font-semibold text-foreground">Download CV</p>
+                  </div>
+                  <div className="rounded-xl border border-primary/30 bg-primary/10 p-2 text-primary flex items-center gap-1">
+                    <Download className="h-4 w-4" />
+                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
+                </div>
+              </a>
+            </div>
           </div>
         </motion.div>
       </div>

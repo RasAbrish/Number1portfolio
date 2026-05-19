@@ -6,7 +6,7 @@ export const metadata = {
   title: "Abrham - Portfolio",
   description: "Personal portfolio website of Abrham - Full Stack Developer",
   icons: {
-    icon: "/icon.svg",
+    icon: "/icon.png",
     apple: "/apple-icon.png",
   },
     generator: 'v0.app'
