@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { motion, useAnimationFrame, useMotionValue } from "framer-motion"
+import { motion, useAnimationFrame, useMotionValue } from "motion/react"
 
 type Tool = {
   name: string
@@ -142,7 +142,7 @@ export default function SkillsSection() {
         >
           <p className="mb-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">Favorite Tools</p>
           <h2 className="mb-4 text-4xl font-serif md:text-6xl">
-            My <span className="text-primary italic">Technologies</span>
+            My <span className="text-luxe italic pr-1">Technologies</span>
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">Languages, frameworks, and platforms I use across full-stack products.</p>
         </motion.div>

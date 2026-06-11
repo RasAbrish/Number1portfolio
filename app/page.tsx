@@ -10,7 +10,7 @@ import Milestones from "./components/milestones"
 import FloatingCharacter from "./components/floating-character"
 import HeroSection from "./components/hero-section"
 import ContactSection from "./components/contact-section"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 import { PixelImage } from "@/components/ui/pixel-image"
 
 const fadeLeft = {
@@ -54,7 +54,7 @@ export default function Home() {
             About Me
           </motion.p>
           <motion.h2 {...fadeUp} className="text-4xl md:text-6xl font-serif text-center mb-20">
-            The <span className="text-primary italic">Developer</span> Behind the Work
+            The <span className="text-luxe italic pr-1">Developer</span> Behind the Work
           </motion.h2>
 
           <div className="grid lg:grid-cols-[1fr,1.5fr] gap-20 items-center">
@@ -130,10 +130,14 @@ export default function Home() {
         </div>
       </section>
 
+      <div className="hairline-gold mx-auto max-w-3xl" />
+
       {/* ── My Journey ── */}
       <ScrollReveal>
         <Milestones />
       </ScrollReveal>
+
+      <div className="hairline-gold mx-auto max-w-3xl" />
 
       {/* ── Projects ── */}
       <ScrollReveal>
@@ -142,7 +146,7 @@ export default function Home() {
             <motion.div {...fadeUp} className="text-center mb-16">
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-4">Portfolio</p>
               <h2 className="text-4xl md:text-6xl font-serif">
-                Featured <span className="text-primary italic">Projects</span>
+                Featured <span className="text-luxe italic pr-1">Projects</span>
               </h2>
             </motion.div>
             <ProjectsGrid />
@@ -154,6 +158,8 @@ export default function Home() {
       <ScrollReveal>
         <SkillsSection />
       </ScrollReveal>
+
+      <div className="hairline-gold mx-auto max-w-3xl" />
 
       {/* ── Testimonials ── */}
       <ScrollReveal>

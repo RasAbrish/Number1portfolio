@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, Send } from "lucide-react"
+import { Github, Linkedin, Mail, Send, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function Footer() {
@@ -35,6 +35,16 @@ export default function Footer() {
               <li>
                 <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors">
                   Contact
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/Abrham-Ababu-CV.pdf"
+                  download
+                  className="group inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-gradient-to-b from-primary/20 to-primary/5 px-3 py-1 text-foreground hover:border-primary/45 hover:from-primary/30 hover:to-primary/10 transition-all duration-300"
+                >
+                  <Download className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-y-0.5" strokeWidth={2.4} />
+                  <span>Download CV</span>
                 </a>
               </li>
             </ul>

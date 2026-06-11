@@ -3,65 +3,71 @@
 @tailwind utilities;
 
 :root {
-  --background: 30 20% 98%;
-  --foreground: 0 0% 10%;
+  /* Light: warm ivory canvas with antique gold */
+  --background: 40 33% 97%;
+  --foreground: 30 12% 10%;
 
-  --card: 30 20% 95%;
-  --card-foreground: 0 0% 10%;
+  --card: 40 28% 94%;
+  --card-foreground: 30 12% 10%;
 
-  --popover: 30 20% 98%;
-  --popover-foreground: 0 0% 10%;
+  --popover: 40 33% 97%;
+  --popover-foreground: 30 12% 10%;
 
-  --primary: 15 58% 60%;
-  --primary-foreground: 0 0% 100%;
+  --primary: 41 55% 42%;
+  --primary-foreground: 40 33% 98%;
 
-  --secondary: 30 10% 90%;
-  --secondary-foreground: 0 0% 10%;
+  --secondary: 40 18% 89%;
+  --secondary-foreground: 30 12% 10%;
 
-  --muted: 30 10% 92%;
-  --muted-foreground: 0 0% 40%;
+  --muted: 40 18% 91%;
+  --muted-foreground: 30 8% 38%;
 
-  --accent: 15 58% 65%;
-  --accent-foreground: 0 0% 100%;
+  --accent: 41 55% 48%;
+  --accent-foreground: 40 33% 98%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
-  --border: 30 15% 85%;
-  --input: 30 15% 85%;
-  --ring: 15 58% 60%;
+  --border: 40 16% 84%;
+  --input: 40 16% 84%;
+  --ring: 41 55% 42%;
 
   --radius: 0.5rem;
+
+  --gold-bright: 45 80% 72%;
+  --gold: 42 62% 55%;
+  --gold-deep: 38 55% 38%;
 }
 
 .dark {
-  --background: 0 0% 10%;
-  --foreground: 30 20% 98%;
+  /* Dark: near-black canvas with champagne gold */
+  --background: 30 8% 5%;
+  --foreground: 40 28% 95%;
 
-  --card: 0 0% 15%;
-  --card-foreground: 30 20% 98%;
+  --card: 32 10% 9%;
+  --card-foreground: 40 28% 95%;
 
-  --popover: 0 0% 10%;
-  --popover-foreground: 30 20% 98%;
+  --popover: 30 8% 6%;
+  --popover-foreground: 40 28% 95%;
 
-  --primary: 15 58% 60%;
-  --primary-foreground: 0 0% 100%;
+  --primary: 42 62% 58%;
+  --primary-foreground: 30 10% 8%;
 
-  --secondary: 0 0% 20%;
-  --secondary-foreground: 30 20% 98%;
+  --secondary: 32 8% 13%;
+  --secondary-foreground: 40 28% 95%;
 
-  --muted: 0 0% 20%;
-  --muted-foreground: 30 10% 70%;
+  --muted: 32 8% 13%;
+  --muted-foreground: 38 12% 68%;
 
-  --accent: 15 58% 60%;
-  --accent-foreground: 0 0% 100%;
+  --accent: 42 62% 58%;
+  --accent-foreground: 30 10% 8%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
-  --border: 0 0% 20%;
-  --input: 0 0% 20%;
-  --ring: 15 58% 60%;
+  --border: 35 10% 16%;
+  --input: 35 10% 16%;
+  --ring: 42 62% 58%;
 }
 
 
@@ -89,12 +95,75 @@
   background-size: 40px 40px;
 }
 
-.bg-terracotta {
-  background-color: hsl(15 58% 60%);
+/* ── Luxury layer ── */
+
+::selection {
+  background: hsl(var(--primary) / 0.85);
+  color: hsl(var(--primary-foreground));
 }
 
-.text-terracotta {
-  color: hsl(15 58% 60%);
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary) / 0.4) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.35);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.6);
+}
+
+/* Champagne-gold gradient text with a slow shimmer sweep */
+.text-luxe {
+  background: linear-gradient(
+    100deg,
+    hsl(var(--gold-deep)) 0%,
+    hsl(var(--gold)) 28%,
+    hsl(var(--gold-bright)) 50%,
+    hsl(var(--gold)) 72%,
+    hsl(var(--gold-deep)) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: luxe-shimmer 6s ease-in-out infinite;
+}
+
+@keyframes luxe-shimmer {
+  0%, 100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+
+/* Thin gold hairline divider that fades at both ends */
+.hairline-gold {
+  height: 1px;
+  border: none;
+  background: linear-gradient(to right, transparent, hsl(var(--primary) / 0.5), transparent);
+}
+
+/* Soft golden halo for framed imagery and feature cards */
+.glow-gold {
+  box-shadow:
+    0 0 0 1px hsl(var(--primary) / 0.25),
+    0 8px 40px -12px hsl(var(--primary) / 0.35);
 }
 
 .animate-in {

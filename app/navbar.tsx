@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu, X } from "lucide-react"
+import { Menu, X, Download } from "lucide-react"
 import Image from "next/image"
 
 export default function Navbar() {
@@ -151,6 +151,14 @@ export default function Navbar() {
                 </svg>
               )}
             </button>
+            <a
+              href="/Abrham-Ababu-CV.pdf"
+              download
+              className="group ml-1 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-gradient-to-b from-primary/25 to-primary/10 px-3.5 py-1.5 text-xs font-semibold text-foreground shadow-[0_10px_24px_-18px_hsl(var(--primary)/0.95)] transition-all duration-300 hover:-translate-y-0.5 hover:from-primary/35 hover:to-primary/15 hover:shadow-[0_14px_28px_-16px_hsl(var(--primary)/0.95)]"
+            >
+              <Download className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-y-0.5" strokeWidth={2.4} />
+              <span>Download CV</span>
+            </a>
           </nav>
 
           {/* Mobile Navigation */}
@@ -203,6 +211,14 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+            <a
+              href="/Abrham-Ababu-CV.pdf"
+              download
+              className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/30 bg-gradient-to-b from-primary/25 to-primary/10 text-foreground font-medium shadow-[0_10px_24px_-18px_hsl(var(--primary)/0.95)] transition-all duration-300 hover:from-primary/35 hover:to-primary/15"
+            >
+              <Download className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" strokeWidth={2.4} />
+              <span>Download CV</span>
+            </a>
           </nav>
         )}
       </div>

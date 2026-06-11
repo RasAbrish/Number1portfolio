@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Quote } from "lucide-react"
-import { motion, useAnimationFrame, useMotionValue } from "framer-motion"
+import { motion, useAnimationFrame, useMotionValue } from "motion/react"
 
 const testimonials = [
   {
@@ -81,7 +81,7 @@ export default function Testimonials() {
       
       <div className="container px-4 mx-auto relative z-10 mb-16">
         <h2 className="text-3xl md:text-5xl font-serif text-center tracking-tight mb-4">
-          What People <span className="text-primary italic">Say</span>
+          What People <span className="text-luxe italic pr-1">Say</span>
         </h2>
         <p className="text-center text-muted-foreground text-base md:text-lg font-sans">Trusted by industry professionals and colleagues</p>
       </div>

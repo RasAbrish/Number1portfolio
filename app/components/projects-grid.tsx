@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { ArrowUpRight, ExternalLink } from "lucide-react"
 import Image from "next/image"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "motion/react"
 
 interface Project {
   id: number

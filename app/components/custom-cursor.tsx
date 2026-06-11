@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { motion, useSpring } from "framer-motion"
+import { motion, useSpring } from "motion/react"
 
 export default function CustomCursor() {
   const [enabled, setEnabled] = useState(false)

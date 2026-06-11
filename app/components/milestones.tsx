@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef } from "react"
-import { motion, useScroll, useSpring } from "framer-motion"
+import { motion, useScroll, useSpring } from "motion/react"
 import { GraduationCap, Trophy, Award, Briefcase, Building2, Monitor } from "lucide-react"
 
 const milestones = [
@@ -78,7 +78,7 @@ export default function Milestones() {
         >
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-4 opacity-75">Timeline</p>
           <h2 className="text-4xl md:text-6xl font-serif tracking-tight mb-5">
-            My <span className="text-primary italic">Journey</span>
+            My <span className="text-luxe italic pr-1">Journey</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
             Six defining moments that shaped who I am as a developer and professional.

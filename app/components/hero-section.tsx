@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { ArrowUpRight, Download, Mail, FolderKanban } from "lucide-react"
+import { motion, AnimatePresence } from "motion/react"
+import { ArrowUpRight, Send } from "lucide-react"
 import SpaceBackground from "./space-background"
 import ScrollDownIndicator from "./scroll-down-indicator"
 
@@ -48,7 +48,7 @@ export default function HeroSection() {
           </motion.div>
 
           <h1 className="text-5xl md:text-8xl font-serif tracking-tight mb-4 text-foreground">
-            Hi, I am <span className="text-primary italic">Abrham.</span>
+            Hi, I am <span className="text-luxe italic pr-1">Abrham.</span>
           </h1>
 
           <div className="h-12 md:h-16 flex items-center justify-center mb-10">
@@ -66,56 +66,21 @@ export default function HeroSection() {
             </AnimatePresence>
           </div>
 
-          <div className="pointer-events-auto mx-auto max-w-5xl">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+          <div className="pointer-events-auto mx-auto max-w-xl">
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:flex-nowrap">
               <a
                 href="#projects"
-                className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/80 backdrop-blur-sm p-4 md:p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-primary/45 hover:shadow-[0_16px_35px_-22px_hsl(var(--primary)/0.95)]"
+                className="group inline-flex w-[180px] items-center justify-center gap-2 rounded-full border border-primary/35 bg-gradient-to-b from-primary/30 to-primary/15 px-5 py-2.5 text-sm font-semibold text-foreground shadow-[0_10px_30px_-18px_hsl(var(--primary)/0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:from-primary/40 hover:to-primary/20 hover:shadow-[0_16px_35px_-20px_hsl(var(--primary)/0.95)]"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.1] via-transparent to-transparent opacity-80" />
-                <div className="relative flex items-center justify-between">
-                  <div>
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-1">Portfolio</p>
-                    <p className="text-base md:text-lg font-semibold text-foreground">Explore My Work</p>
-                  </div>
-                  <div className="rounded-xl border border-primary/30 bg-primary/10 p-2 text-primary">
-                    <FolderKanban className="h-4 w-4" />
-                  </div>
-                </div>
+                <span>Explore My Work</span>
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2.4} />
               </a>
-
               <a
                 href="#contact"
-                className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/80 backdrop-blur-sm p-4 md:p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-primary/45 hover:shadow-[0_16px_35px_-22px_hsl(var(--primary)/0.95)]"
+                className="group inline-flex w-[180px] items-center justify-center gap-2 rounded-full border border-border/80 bg-gradient-to-b from-card to-card/70 px-5 py-2.5 text-sm font-semibold text-foreground shadow-[0_10px_26px_-20px_black] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:from-card hover:to-card hover:shadow-[0_14px_30px_-20px_hsl(var(--primary)/0.65)]"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent opacity-80" />
-                <div className="relative flex items-center justify-between">
-                  <div>
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-1">Contact</p>
-                    <p className="text-base md:text-lg font-semibold text-foreground">Get in Touch</p>
-                  </div>
-                  <div className="rounded-xl border border-primary/30 bg-primary/10 p-2 text-primary">
-                    <Mail className="h-4 w-4" />
-                  </div>
-                </div>
-              </a>
-
-              <a
-                href="/Abrham-Ababu-CV.pdf"
-                download
-                className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/80 backdrop-blur-sm p-4 md:p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:border-primary/45 hover:shadow-[0_16px_35px_-22px_hsl(var(--primary)/0.95)]"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent opacity-80" />
-                <div className="relative flex items-center justify-between">
-                  <div>
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-1">Resume</p>
-                    <p className="text-base md:text-lg font-semibold text-foreground">Download CV</p>
-                  </div>
-                  <div className="rounded-xl border border-primary/30 bg-primary/10 p-2 text-primary flex items-center gap-1">
-                    <Download className="h-4 w-4" />
-                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </div>
-                </div>
+                <Send className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2.4} />
+                <span>Get in Touch</span>
               </a>
             </div>
           </div>
