@@ -1,6 +1,6 @@
 import "@/styles/globals.css"
-import { Cormorant_Garamond, Manrope } from "next/font/google"
-import CustomCursor from "./components/custom-cursor"
+import { Cormorant_Garamond, Manrope, JetBrains_Mono } from "next/font/google"
+import DevCursor from "./components/os/dev-cursor"
 import { Toaster } from "sonner"
 
 const serif = Cormorant_Garamond({
@@ -13,6 +13,11 @@ const serif = Cormorant_Garamond({
 const sans = Manrope({
   subsets: ["latin"],
   variable: "--font-sans",
+})
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
 })
 
 export const metadata = {
@@ -31,9 +36,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`scroll-smooth dark ${serif.variable} ${sans.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`scroll-smooth dark ${serif.variable} ${sans.variable} ${mono.variable}`}
+    >
       <body className="font-sans">
-        <CustomCursor />
+        <DevCursor />
         <Toaster richColors position="top-right" />
         {children}
       </body>
