@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import { motion, AnimatePresence } from "motion/react"
 import { person, stats } from "@/lib/data"
+import { CountUp } from "./count-up"
 
 const HeroThree = dynamic(() => import("./hero-three"), { ssr: false })
 
@@ -146,7 +147,7 @@ export default function TerminalHero() {
             >
               {stats.map((s) => (
                 <div key={s.label} className="font-mono">
-                  <p className="text-3xl text-luxe md:text-4xl">{s.value}</p>
+                  <CountUp value={s.value} className="text-3xl text-luxe md:text-4xl" />
                   <p className="mt-1 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{s.label}</p>
                 </div>
               ))}

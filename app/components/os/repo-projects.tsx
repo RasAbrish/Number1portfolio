@@ -6,6 +6,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "motion/react"
 import { ArrowUpRight } from "lucide-react"
 import { projects, type Project } from "@/lib/data"
 import { SectionHeading } from "./about-code"
+import { Carousel } from "./carousel"
 
 function RepoCard({ project, index }: { project: Project; index: number }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -35,6 +36,7 @@ function RepoCard({ project, index }: { project: Project; index: number }) {
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.6, type: "spring", bounce: 0.2, delay: (index % 2) * 0.1 }}
       style={{ perspective: 1200 }}
+      className="h-full"
     >
       <motion.div
         ref={ref}
@@ -116,6 +118,10 @@ function RepoCard({ project, index }: { project: Project; index: number }) {
 }
 
 export default function RepoProjects() {
+  // Featured projects lead the track; everything else follows. Adding a 40th
+  // project just extends the carousel — the page height stays fixed.
+  const ordered = [...projects].sort((a, b) => Number(b.featured ?? false) - Number(a.featured ?? false))
+
   return (
     <section id="projects" className="relative overflow-hidden py-28">
       <div className="container relative z-10 mx-auto px-4">
@@ -129,10 +135,16 @@ export default function RepoProjects() {
           }
         />
 
-        <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
-          {projects.map((p, i) => (
-            <RepoCard key={p.id} project={p} index={i} />
-          ))}
+        <div className="mx-auto max-w-5xl">
+          <Carousel
+            ariaLabel="Projects"
+            autoPlay
+            interval={4500}
+            slideClassName="basis-full md:basis-[calc(50%-0.75rem)]"
+            items={ordered.map((p, i) => (
+              <RepoCard key={p.id} project={p} index={i} />
+            ))}
+          />
         </div>
       </div>
     </section>

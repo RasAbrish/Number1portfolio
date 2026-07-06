@@ -9,6 +9,7 @@ import DepSkills from "./components/os/dep-skills"
 import ReviewTestimonials from "./components/os/review-testimonials"
 import TerminalContact from "./components/os/terminal-contact"
 import StatusFooter from "./components/os/status-footer"
+import AiChat from "./components/os/ai-chat"
 
 export default function Home() {
   return (
@@ -32,6 +33,8 @@ export default function Home() {
       <TerminalContact />
 
       <StatusFooter />
+
+      <AiChat />
     </div>
   )
 }

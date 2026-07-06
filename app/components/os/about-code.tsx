@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { motion } from "motion/react"
 import { person, stats } from "@/lib/data"
+import { CountUp } from "./count-up"
 
 /** Syntax-colored tokens for the developer.ts editor pane */
 const T = {
@@ -169,7 +170,7 @@ export default function AboutCode() {
                     <p key={s.label}>
                       <span className={T.kw}>export const</span>{" "}
                       <span className={T.key}>{s.label.replace(/ /g, "_")}</span> <span className={T.punc}>=</span>{" "}
-                      <span className="text-luxe text-base">{s.value}</span>
+                      <CountUp value={s.value} className="text-luxe text-base" />
                     </p>
                   ))}
                 </div>

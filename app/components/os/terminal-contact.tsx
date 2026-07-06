@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "motion/react"
-import { Github, Linkedin, Mail, MapPin, Send } from "lucide-react"
+import { Github, Linkedin, Mail, MapPin, Phone, Send } from "lucide-react"
 import ContactForm from "../../contact-form"
 import { person } from "@/lib/data"
 import { SectionHeading } from "./about-code"
@@ -49,6 +49,16 @@ export default function TerminalContact() {
                   <span className="min-w-0">
                     <span className="block text-[10px] uppercase tracking-[0.2em] text-muted-foreground">email</span>
                     <span className="block truncate text-foreground/90 group-hover:text-primary">{person.email}</span>
+                  </span>
+                </a>
+
+                <a href={`tel:${person.phone.replace(/\s/g, "")}`} className="group flex items-center gap-3 transition-colors hover:text-primary">
+                  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border border-primary/25 bg-primary/10 text-primary">
+                    <Phone className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[10px] uppercase tracking-[0.2em] text-muted-foreground">phone</span>
+                    <span className="block truncate text-foreground/90 group-hover:text-primary">{person.phone}</span>
                   </span>
                 </a>
 

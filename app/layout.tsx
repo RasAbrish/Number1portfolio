@@ -1,23 +1,35 @@
 import "@/styles/globals.css"
-import { Cormorant_Garamond, Manrope, JetBrains_Mono } from "next/font/google"
+import localFont from "next/font/local"
 import DevCursor from "./components/os/dev-cursor"
 import { Toaster } from "sonner"
 
-const serif = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+// Fonts are self-hosted (woff2 in app/fonts) so the build never depends on
+// fetching from Google Fonts — no network flakiness, faster builds.
+const serif = localFont({
   variable: "--font-serif",
+  display: "swap",
+  src: [
+    { path: "./fonts/cormorant-garamond-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/cormorant-garamond-latin-400-italic.woff2", weight: "400", style: "italic" },
+    { path: "./fonts/cormorant-garamond-latin-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/cormorant-garamond-latin-500-italic.woff2", weight: "500", style: "italic" },
+    { path: "./fonts/cormorant-garamond-latin-600-normal.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/cormorant-garamond-latin-600-italic.woff2", weight: "600", style: "italic" },
+    { path: "./fonts/cormorant-garamond-latin-700-normal.woff2", weight: "700", style: "normal" },
+    { path: "./fonts/cormorant-garamond-latin-700-italic.woff2", weight: "700", style: "italic" },
+  ],
 })
 
-const sans = Manrope({
-  subsets: ["latin"],
+const sans = localFont({
   variable: "--font-sans",
+  display: "swap",
+  src: [{ path: "./fonts/manrope-latin-wght-normal.woff2", weight: "200 800", style: "normal" }],
 })
 
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
+const mono = localFont({
   variable: "--font-mono",
+  display: "swap",
+  src: [{ path: "./fonts/jetbrains-mono-latin-wght-normal.woff2", weight: "100 800", style: "normal" }],
 })
 
 export const metadata = {

@@ -125,6 +125,16 @@
   background: hsl(var(--primary) / 0.6);
 }
 
+/* Carousel track — swipeable, snap-aligned, scrollbar hidden (custom controls handle nav) */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Champagne-gold gradient text with a slow shimmer sweep */
 .text-luxe {
   background: linear-gradient(

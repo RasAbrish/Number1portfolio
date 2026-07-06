@@ -7,8 +7,9 @@ export const person = {
   handle: "abrham@dev",
   location: "Addis Ababa, Ethiopia",
   email: "abrhambest7@gmail.com",
+  phone: "+251 943113823",
   telegram: "@RASAbrish",
-  cv: "/Abrham-Ababu-CV.pdf",
+  cv: "/ABRHAM%20ABABU%20CV.pdf",
   availability: "available for new opportunities",
   roles: [
     "Full Stack Developer",
@@ -104,9 +105,37 @@ export interface Project {
   company?: string
   role?: string
   image?: string
+  /** Surfaced first in the projects carousel. */
+  featured?: boolean
 }
 
 export const projects: Project[] = [
+  {
+    id: 7,
+    slug: "ptgr-token",
+    title: "PTGR Token Platform",
+    description:
+      "Token-holder platform built for the PTGR hackathon in Switzerland — secure onboarding, Didit-powered KYC/identity verification, and global investor access across 40+ countries.",
+    tags: ["Next.js", "NestJS", "TypeScript", "Tailwind", "Didit"],
+    link: "https://ptgr-front-end.onrender.com/",
+    company: "PTGR",
+    role: "Full Stack Developer",
+    image: "/assets/images/ptgr.png",
+    featured: true,
+  },
+  {
+    id: 8,
+    slug: "beleqet",
+    title: "Beleqet — Career Marketplace",
+    description:
+      "Ethiopia's job-finding platform connecting seekers with verified employers, featuring job search, CV maker, and employer tools. Built as a recruitment interview assessment.",
+    tags: ["Next.js", "NestJS", "Redis", "TypeScript"],
+    link: "https://beleqet-interview-task-mu.vercel.app/",
+    company: "Interview Assessment",
+    role: "Full Stack Developer",
+    image: "/assets/images/beleqet.png",
+    featured: true,
+  },
   {
     id: 0,
     slug: "headless-cms",
@@ -286,5 +315,12 @@ export const testimonials: Testimonial[] = [
     company: "Hammer AI",
     content:
       "I am passionate about AI products, and Abrham is one of the few developers who can translate client requirements into practical results. His commitment to AI technology and delivery quality made our collaboration very successful.",
+  },
+  {
+    name: "Abel Shebabaw",
+    role: "Senior Fullstack Developer",
+    company: "Safaricom Ethiopia",
+    content:
+      "Abrham is a reliable and skilled developer. He writes clean code, learns fast, and is easy to work with on any team. A great engineer to have on a project.",
   },
 ]
