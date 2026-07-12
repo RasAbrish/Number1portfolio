@@ -35,10 +35,6 @@ const mono = localFont({
 export const metadata = {
   title: "Abrham - Portfolio",
   description: "Personal portfolio website of Abrham - Full Stack Developer",
-  icons: {
-    icon: "/icon.png",
-    apple: "/apple-icon.png",
-  },
   verification: {
     google: "a0C-_AWY6EQ0mu4FvV_QOwuY3Z5mLeyr0S5nZjnVNgk",
   },
