@@ -33,9 +33,9 @@ const mono = localFont({
 })
 
 const siteUrl = "https://abrhamababu.pro.et"
-const siteTitle = "Abrham Ababu — Full Stack Developer"
+const siteTitle = "Abrham Ababu —  Senior Full Stack Developer"
 const siteDescription =
-  "Portfolio of Abrham Ababu, a Full Stack Developer building modern web applications with Next.js, React, Node.js, and TypeScript."
+  "Abrham Ababu is a Full-Stack Software Developer experienced in Next.js, React, TypeScript, NestJS, Laravel, ERPNext, and scalable web applications."
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -53,6 +53,10 @@ export const metadata = {
   ],
   authors: [{ name: "Abrham Ababu", url: siteUrl }],
   creator: "Abrham Ababu",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+  },
   alternates: {
     canonical: "/",
   },
@@ -67,7 +71,7 @@ export const metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Abrham Ababu — Full Stack Developer",
+        alt: "Abrham Ababu — Senior Full Stack Developer",
       },
     ],
     locale: "en_US",
