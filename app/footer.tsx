@@ -39,7 +39,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="/ABRHAM%20ABABU%20CV.pdf"
+                  href="/Abrham%20Ababu%20CV.pdf"
                   download
                   className="group inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-gradient-to-b from-primary/20 to-primary/5 px-3 py-1 text-foreground hover:border-primary/45 hover:from-primary/30 hover:to-primary/10 transition-all duration-300"
                 >

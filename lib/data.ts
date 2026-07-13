@@ -9,7 +9,7 @@ export const person = {
   email: "abrhambest7@gmail.com",
   phone: "+251 943113823",
   telegram: "@RASAbrish",
-  cv: "/ABRHAM%20ABABU%20CV.pdf",
+  cv: "/Abrham%20Ababu%20CV.pdf",
   availability: "available for new opportunities",
   roles: [
     "Full Stack Developer",

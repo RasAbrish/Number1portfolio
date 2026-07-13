@@ -152,7 +152,7 @@ export default function Navbar() {
               )}
             </button>
             <a
-              href="/ABRHAM%20ABABU%20CV.pdf"
+              href="/Abrham%20Ababu%20CV.pdf"
               download
               className="group ml-1 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-gradient-to-b from-primary/25 to-primary/10 px-3.5 py-1.5 text-xs font-semibold text-foreground shadow-[0_10px_24px_-18px_hsl(var(--primary)/0.95)] transition-all duration-300 hover:-translate-y-0.5 hover:from-primary/35 hover:to-primary/15 hover:shadow-[0_14px_28px_-16px_hsl(var(--primary)/0.95)]"
             >
@@ -212,7 +212,7 @@ export default function Navbar() {
               </Link>
             ))}
             <a
-              href="/ABRHAM%20ABABU%20CV.pdf"
+              href="/Abrham%20Ababu%20CV.pdf"
               download
               className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/30 bg-gradient-to-b from-primary/25 to-primary/10 text-foreground font-medium shadow-[0_10px_24px_-18px_hsl(var(--primary)/0.95)] transition-all duration-300 hover:from-primary/35 hover:to-primary/15"
             >
