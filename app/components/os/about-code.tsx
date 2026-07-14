@@ -64,7 +64,7 @@ export default function AboutCode() {
                 <span className="os-dot" />
                 <span className="os-dot" />
                 <span className="ml-3 font-mono text-[11px] tracking-widest text-muted-foreground">
-                  profile-photo.jpg — preview
+                  profile-photo.png — preview
                 </span>
               </div>
               <div className="relative scanlines">

@@ -27,7 +27,7 @@ export const person = {
     "I’m a full-stack software developer building scalable web products and digital platforms across ERP systems, internal tools, and customer-facing applications.",
     "My experience includes Safaricom’s Talent Cloud program, enterprise rental and agreement systems, and production websites for growing businesses, with a focus on clean architecture, delivery speed, and practical business impact.",
   ],
-  photo: "/assets/images/profile-photo.jpg",
+  photo: "/assets/images/profile-photo.png",
 }
 
 export const stats = [
