@@ -34,9 +34,9 @@ function ReviewCard({ t, index }: { t: Testimonial; index: number }) {
           <div className="flex h-10 w-10 items-center justify-center rounded-md border border-primary/30 bg-primary/10 font-serif text-lg text-primary">
             {t.name.charAt(0)}
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <h4 className="font-serif text-base tracking-tight text-foreground">{t.name}</h4>
-            <p className="truncate font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            <p className="mt-0.5 break-words font-mono text-[10px] uppercase leading-relaxed tracking-[0.12em] text-muted-foreground">
               <span className="text-primary/80">{t.role}</span> @ {t.company}
             </p>
           </div>

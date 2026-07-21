@@ -32,7 +32,7 @@ export const person = {
 
 export const stats = [
   { value: "3+", label: "years experience" },
-  { value: "10+", label: "projects shipped" },
+  { value: "12+", label: "projects shipped" },
   { value: "5+", label: "companies served" },
 ]
 
@@ -52,6 +52,14 @@ export const milestones: Milestone[] = [
     description:
       "Began my Bachelor's in Computer Science where curiosity became code, and learning became a way of life.",
     branch: "init",
+  },
+  {
+    hash: "b7c8d9e",
+    year: "2022+",
+    title: "Founded HaLink Technology PLC",
+    description:
+      "Co-founded HaLink Technology PLC after starting university, growing from student builder into a key founder and CTO shaping the company's technical direction.",
+    branch: "feat/halink-founder",
   },
   {
     hash: "f4e5d6c",
@@ -110,6 +118,32 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    id: 9,
+    slug: "halink",
+    title: "HaLink Technology PLC",
+    description:
+      "Co-founded HaLink Technology PLC and helped lead the company as CTO, building the public web platform with a JavaScript, CSS, and Next.js stack alongside the founding team.",
+    tags: ["Next.js", "JavaScript", "CSS", "Company Website"],
+    link: "https://halink.et/",
+    company: "HaLink Technology PLC",
+    role: "Key Founder & CTO",
+    image: "/assets/images/halink.png",
+    featured: true,
+  },
+  {
+    id: 10,
+    slug: "skiwai",
+    title: "Skiwai Platform",
+    description:
+      "Full-stack platform formerly known as Impactis, built to connect startup founders with advisors and legal funding support in an AngelList-inspired ecosystem.",
+    tags: ["Next.js", "NestJS", "AWS", "Cloudflare", "TypeScript"],
+    link: "https://skiwai.com/",
+    company: "Skiwai",
+    role: "Full Stack Developer",
+    image: "/assets/images/impactis.png",
+    featured: true,
+  },
   {
     id: 7,
     slug: "ptgr-token",
@@ -322,5 +356,19 @@ export const testimonials: Testimonial[] = [
     company: "Safaricom Ethiopia",
     content:
       "Abrham is a reliable and skilled developer. He writes clean code, learns fast, and is easy to work with on any team. A great engineer to have on a project.",
+  },
+  {
+    name: "Amanuel Girma",
+    role: "Co-Founder",
+    company: "HaLink Technology PLC",
+    content:
+      "Abrham is my friend and co-founder at HaLink. Working with him as a team has been a strong experience, especially on large ERP and complex projects where the way he handles pressure, structure, and delivery is amazing.",
+  },
+  {
+    name: "Mr. Ashenafi",
+    role: "Project Collaborator",
+    company: "Impactis / Skiwai",
+    content:
+      "Abrham is a good software engineer. We have known each other through Impactis, Skiwai, and several other projects, and he follows client alignment well with mature, skillful execution.",
   },
 ]

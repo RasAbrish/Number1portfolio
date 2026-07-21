@@ -9,21 +9,27 @@ interface Msg {
   content: string
 }
 
+interface PendingContact {
+  request: string
+  transcript: Msg[]
+}
+
 const SUGGESTIONS = [
   "What's Abrham's tech stack?",
   "Tell me about the PTGR project",
+  "Tell Abrham I want to build a platform",
   "Where has he worked?",
-  "How do I contact him?",
 ]
 
 const GREETING =
-  "Hi — I'm Abrham's AI assistant, trained on his CV. Ask me about his experience, projects, skills, or how to reach him."
+  "Hi — I'm Abrham's AI assistant, trained on his CV and portfolio at abrhamababu.pro.et. Ask me about his experience, projects, skills, or how to reach him."
 
 export default function AiChat() {
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState("")
   const [messages, setMessages] = useState<Msg[]>([])
   const [streaming, setStreaming] = useState(false)
+  const [pendingContact, setPendingContact] = useState<PendingContact | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -38,7 +44,61 @@ export default function AiChat() {
   function clearChat() {
     setMessages([])
     setInput("")
+    setPendingContact(null)
     inputRef.current?.focus()
+  }
+
+  function isAffirmative(text: string) {
+    return /^(yes|yeah|yep|sure|ok|okay|send|please send|do it|confirm)\b/i.test(text.trim())
+  }
+
+  function isNegative(text: string) {
+    return /^(no|nope|cancel|don't|dont|stop|not now)\b/i.test(text.trim())
+  }
+
+  function hasContactIntent(text: string) {
+    const normalized = text.toLowerCase()
+    if (/how\s+(can\s+i\s+)?(do\s+i\s+)?contact/.test(normalized)) return false
+    if (/\b(tell me|what|which|show|list|explain|describe)\b.*\b(project|projects|work|experience|stack)\b/.test(normalized)) {
+      return false
+    }
+
+    const directContact = /\b(contact|email|mail|send|hire|hiring|collaborate|collaboration|proposal|quote|quotation|work with|reach abrham)\b/.test(
+      normalized,
+    )
+    const visitorRequest = /\b(i|we|our company|my company)\b.*\b(want|need|would like|am looking|are looking|plan)\b.*\b(build|create|develop|hire|contact|email|website|app|platform|project)\b/.test(
+      normalized,
+    )
+    return directContact || visitorRequest
+  }
+
+  function extractEmail(text: string) {
+    return text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0]
+  }
+
+  async function sendContactEmail(contact: PendingContact, confirmation: string) {
+    const visitorEmail = extractEmail(`${contact.request} ${confirmation}`)
+    const transcript = [...contact.transcript, { role: "user" as const, content: confirmation }]
+      .map((m) => `${m.role === "user" ? "Visitor" : "Assistant"}: ${m.content}`)
+      .join("\n\n")
+
+    const res = await fetch("/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: visitorEmail ? "Portfolio AI visitor" : "Portfolio AI visitor (no reply email provided)",
+        email: visitorEmail ?? "abrhambest7@gmail.com",
+        subject: "Portfolio AI contact request",
+        message: `A visitor asked the AI assistant to contact Abrham.\n\nVisitor request:\n${contact.request}\n\n${
+          visitorEmail ? `Visitor email: ${visitorEmail}` : "Visitor email: not provided"
+        }\n\nConversation transcript:\n${transcript}`,
+      }),
+    })
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => null)
+      throw new Error(data?.message ?? "Email could not be sent.")
+    }
   }
 
   async function send(text: string) {
@@ -48,6 +108,77 @@ export default function AiChat() {
     const next: Msg[] = [...messages, { role: "user", content: question }]
     setMessages(next)
     setInput("")
+
+    if (pendingContact) {
+      if (isNegative(question)) {
+        setPendingContact(null)
+        setMessages((m) => [
+          ...m,
+          {
+            role: "assistant",
+            content:
+              "No problem. I will keep it here, and you can still use the Contact section or email Abrham directly at abrhambest7@gmail.com.",
+          },
+        ])
+        return
+      }
+
+      if (isAffirmative(question)) {
+        setStreaming(true)
+        setMessages((m) => [...m, { role: "assistant", content: "Sending this to Abrham's email now..." }])
+        try {
+          await sendContactEmail(pendingContact, question)
+          setPendingContact(null)
+          setMessages((m) => {
+            const copy = [...m]
+            copy[copy.length - 1] = {
+              role: "assistant",
+              content:
+                "Done. I sent your message to Abrham at abrhambest7@gmail.com. If you included your email, he can reply directly.",
+            }
+            return copy
+          })
+        } catch {
+          setMessages((m) => {
+            const copy = [...m]
+            copy[copy.length - 1] = {
+              role: "assistant",
+              content:
+                "I could not send it right now. Please use the Contact section or email Abrham directly at abrhambest7@gmail.com.",
+            }
+            return copy
+          })
+        } finally {
+          setStreaming(false)
+        }
+        return
+      }
+
+      setPendingContact({ request: question, transcript: next })
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          content:
+            "Got it. Would you like me to send this updated message to Abrham's email now? Reply yes to send, or no to keep chatting. Add your email if you want him to reply.",
+        },
+      ])
+      return
+    }
+
+    if (hasContactIntent(question)) {
+      setPendingContact({ request: question, transcript: next })
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          content:
+            "This sounds like something Abrham should see. Would you like me to send it to Abrham's email now? Reply yes to send, or no to keep chatting. Add your email if you want him to reply.",
+        },
+      ])
+      return
+    }
+
     setStreaming(true)
     // Placeholder assistant message that we stream into.
     setMessages((m) => [...m, { role: "assistant", content: "" }])

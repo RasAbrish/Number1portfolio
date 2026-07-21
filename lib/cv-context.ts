@@ -7,7 +7,7 @@ export const CV_TEXT = `
 ABRHAM ABABU — Full-Stack Software Developer
 Location: Addis Ababa, Ethiopia · Nationality: Ethiopian · DOB: 02/03/2002
 Phone / WhatsApp: (+251) 943113823 · Email: abrhambest7@gmail.com
-LinkedIn: linkedin.com/in/abrham-ababu-85a112297 · Portfolio: https://abrhamababuportfolio.vercel.app/
+LinkedIn: linkedin.com/in/abrham-ababu-85a112297 · Portfolio: http://abrhamababu.pro.et/
 
 ABOUT
 Full-Stack Developer with 3+ years of hands-on experience building modular, scalable, production-ready
@@ -34,6 +34,8 @@ WORK EXPERIENCE
   Contributing to a large-scale internal operations project.
 - AfterQuery, San Francisco (remote) — Software Developer & AI Designer (Mar 2026–Current).
   Web app development plus AI-driven solutions and prompt design.
+- HaLink Technology PLC — Key Founder & CTO. Co-founded the company and helps lead the technical
+  direction while building the public website and company platform with JavaScript, CSS, and Next.js.
 - Gebeya Inc / Dala AI — AI Ambassador (Feb 2026–Current). One of the first AI Ambassadors; AI use-case
   development and community adoption.
 - CodSoft (remote) — Web Development Intern (Jun 2023–Jul 2024). Responsive sites in HTML, CSS, JS.
@@ -60,6 +62,12 @@ PROJECTS
 - Beleqet — Ethiopia's career marketplace connecting job seekers with verified employers (job search, CV
   maker, employer tools). Built as a recruitment interview assessment. Next.js, NestJS, Redis, TypeScript.
   Link: https://beleqet-interview-task-mu.vercel.app/
+- HaLink Technology PLC Website — public web platform for HaLink Technology PLC, co-founded by Abrham.
+  Abrham serves as a key founder and CTO and worked on the website with a co-founder using JavaScript,
+  CSS, and Next.js. Link: https://halink.et/
+- Skiwai Platform (formerly Impactis) — platform connecting startup founders with advisors and legal
+  funding support, inspired by startup investment networks such as AngelList. Abrham worked as a
+  full-stack developer using Next.js, NestJS, AWS, Cloudflare, and TypeScript. Link: https://skiwai.com/
 - Fuel Finder — full-stack real-time fuel discovery app (React, Node.js, Express); 2nd place at Safaricom
   Talent Cloud. Link: https://fuel-finder-frontend.onrender.com/
 - AAHRAMS (Senior Project) — Addis Ababa House Rental Agreement Management System; full-stack digital
