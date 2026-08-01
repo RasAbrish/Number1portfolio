@@ -1,20 +1,23 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { motion, useScroll, useSpring } from "motion/react"
 import { Download, Menu, Moon, Sun, X } from "lucide-react"
 import { person } from "@/lib/data"
 
 const navItems = [
-  { id: "home", label: "home", num: "01" },
-  { id: "about", label: "about", num: "02" },
-  { id: "journey", label: "journey", num: "03" },
-  { id: "projects", label: "projects", num: "04" },
-  { id: "skills", label: "skills", num: "05" },
-  { id: "contact", label: "contact", num: "06" },
+  { id: "home", label: "home", num: "01", href: "/" },
+  { id: "about", label: "about", num: "02", href: "/about" },
+  { id: "journey", label: "journey", num: "03", href: "/#journey" },
+  { id: "projects", label: "projects", num: "04", href: "/projects" },
+  { id: "skills", label: "skills", num: "05", href: "/#skills" },
+  { id: "contact", label: "contact", num: "06", href: "/contact" },
 ]
 
 export default function OsNavbar() {
+  const pathname = usePathname()
   const [active, setActive] = useState("home")
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
@@ -35,6 +38,10 @@ export default function OsNavbar() {
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 40)
+      if (pathname !== "/") {
+        setActive(pathname.slice(1))
+        return
+      }
       const sections = document.querySelectorAll<HTMLElement>("section[id]")
       const y = window.scrollY + 120
       let current = "home"
@@ -46,13 +53,7 @@ export default function OsNavbar() {
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
-  }, [])
-
-  const go = (id: string) => {
-    setOpen(false)
-    const el = document.getElementById(id)
-    if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: "smooth" })
-  }
+  }, [pathname])
 
   return (
     <header
@@ -63,7 +64,7 @@ export default function OsNavbar() {
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between">
           {/* Wordmark as a shell prompt */}
-          <button onClick={() => go("home")} className="flex items-center gap-2.5 font-mono text-sm">
+          <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2.5 font-mono text-sm">
             <span className="flex gap-1.5">
               <span className="os-dot" />
               <span className="os-dot" />
@@ -74,14 +75,15 @@ export default function OsNavbar() {
               <span className="text-primary">:~$</span>
             </span>
             <span className="inline-block h-3.5 w-2 bg-primary caret-blink" />
-          </button>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
-              <button
+              <Link
                 key={item.id}
-                onClick={() => go(item.id)}
+                href={item.href}
+                onClick={() => setOpen(false)}
                 className={`group rounded px-3 py-1.5 font-mono text-xs transition-colors duration-200 ${
                   active === item.id ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 }`}
@@ -90,7 +92,7 @@ export default function OsNavbar() {
                   {item.num}
                 </span>
                 {active === item.id ? `[${item.label}]` : item.label}
-              </button>
+              </Link>
             ))}
             <button
               onClick={toggleTheme}
@@ -129,16 +131,17 @@ export default function OsNavbar() {
         {open && (
           <nav className="flex flex-col gap-1 border-t border-border pb-4 pt-2 md:hidden">
             {navItems.map((item) => (
-              <button
+              <Link
                 key={item.id}
-                onClick={() => go(item.id)}
+                href={item.href}
+                onClick={() => setOpen(false)}
                 className={`rounded px-3 py-2.5 text-left font-mono text-sm ${
                   active === item.id ? "bg-primary/10 text-primary" : "text-muted-foreground"
                 }`}
               >
                 <span className="mr-2 text-[10px] opacity-50">{item.num}</span>
                 {item.label}
-              </button>
+              </Link>
             ))}
             <a
               href={person.cv}
