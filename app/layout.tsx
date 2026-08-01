@@ -1,6 +1,7 @@
 import "@/styles/globals.css"
 import localFont from "next/font/local"
 import DevCursor from "./components/os/dev-cursor"
+import AiChat from "./components/os/ai-chat"
 import { Toaster } from "sonner"
 import { person, projects } from "@/lib/data"
 
@@ -188,6 +189,7 @@ export default function RootLayout({
           }}
         />
         {children}
+        <AiChat />
       </body>
     </html>
   )

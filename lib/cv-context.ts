@@ -10,7 +10,7 @@ Phone / WhatsApp: (+251) 943113823 · Email: abrhambest7@gmail.com
 LinkedIn: linkedin.com/in/abrham-ababu-85a112297 · Portfolio: http://abrhamababu.pro.et/
 
 ABOUT
-Full-Stack Developer with 3+ years of hands-on experience building modular, scalable, production-ready
+Full-Stack Developer with 4+ years of hands-on experience building modular, scalable, production-ready
 web applications using React, Next.js, TypeScript, Node.js, NestJS, Laravel, PostgreSQL, Supabase, and
 Docker. Strong across both frontend and backend — responsive UI, API integration, ERP systems, company
 websites, SaaS platforms, and AI automation. Experienced across internships, freelance work, company
@@ -78,4 +78,22 @@ PROJECTS
 - Wedet App — full-stack tourism booking platform; Next.js, Supabase, Docker. Link: https://wedet-fe.vercel.app/
 - Elisoft Solution Website — full Laravel dynamic website. Link: https://elisoftsolution.com
 - Zagoal PLC SaaS — large-scale internal operations project (frontend). Link: https://www.zagoal.com
+- Landing Page & CRM — full-stack monorepo business platform for Oxelan Consult with a responsive
+  landing page, admin dashboard, lead management CRM, secure authentication, Nodemailer email
+  automation, animated modern UI, and client consultation scheduling. Link: https://oxelanconsultet.com/
+- Mary Joy Ethiopia Donation Management System — centralized multi-branch donation management system
+  with donor tracking, inventory management, beneficiary distribution, role-based access control, secure
+  reporting dashboards, donation tracking by type, distribution trend analytics, warehouse management,
+  and branch transfer capabilities.
+- Gym Management System — advanced gym management system with membership management, attendance
+  tracking using Face-API.js, subscription billing, payment management, admin dashboards, responsive
+  client portals, revenue trend analytics, active plan distribution, trainer management, locker system,
+  and SMS broadcast capabilities.
+- Enterprise Assessment & Monitoring System — offline-first enterprise assessment and monitoring
+  platform for MSMEs with automated EGI (Enterprise Gap Index) scoring across 10 domains, coach/admin
+  dashboards, data synchronization, analytics, mobile-responsive assessment tools, priority distribution
+  tracking, and comprehensive reporting.
+- Non-profit Landing Page — modern dynamic landing page for a non-profit organization with responsive
+  layouts, animated UI sections, interactive components, optimized performance for mobile and desktop,
+  program showcases, donation integration, and career sections.
 `.trim()

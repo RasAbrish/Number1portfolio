@@ -31,8 +31,8 @@ export const person = {
 }
 
 export const stats = [
-  { value: "3+", label: "years experience" },
-  { value: "12+", label: "projects shipped" },
+  { value: "4+", label: "years experience" },
+  { value: "17+", label: "projects shipped" },
   { value: "5+", label: "companies served" },
 ]
 
@@ -183,6 +183,71 @@ export const projects: Project[] = [
     image: "/assets/images/cmc-dashboard.png",
   },
   {
+    id: 11,
+    slug: "oxelan-consult-crm",
+    title: "Landing Page & CRM",
+    description:
+      "Full-stack monorepo business platform with a responsive landing page, admin dashboard, lead management CRM, secure authentication, Nodemailer email automation, animated modern UI, and client consultation scheduling.",
+    tags: ["Next.js", "Node.js", "Nodemailer", "CRM", "Auth"],
+    link: "https://oxelanconsultet.com/",
+    company: "Oxelan Consult",
+    role: "Full Stack Developer",
+    image: "/CRM.png",
+    featured: true,
+  },
+  {
+    id: 12,
+    slug: "mary-joy-donation-management",
+    title: "Mary Joy Ethiopia Donation Management System",
+    description:
+      "Centralized multi-branch donation management system with donor tracking, inventory management, beneficiary distribution, role-based access control, secure reporting dashboards, donation-type tracking, distribution analytics, warehouse management, and branch transfers.",
+    tags: ["Next.js", "Dashboard", "RBAC", "Analytics", "Inventory"],
+    link: "#",
+    company: "Mary Joy Ethiopia",
+    role: "Full Stack Developer",
+    image: "/Maryjoy.png",
+    featured: true,
+  },
+  {
+    id: 13,
+    slug: "gym-management-system",
+    title: "Gym Management System",
+    description:
+      "Advanced gym management system featuring membership management, attendance tracking with Face-API.js integration, subscription billing, payment management, admin dashboards, responsive client portals, revenue analytics, trainer management, locker tools, and SMS broadcasts.",
+    tags: ["Face-API.js", "Billing", "Dashboard", "SMS", "Analytics"],
+    link: "#",
+    company: "Gym Operations Platform",
+    role: "Full Stack Developer",
+    image: "/GYM.png",
+    featured: true,
+  },
+  {
+    id: 14,
+    slug: "enterprise-assessment-monitoring",
+    title: "Enterprise Assessment & Monitoring System",
+    description:
+      "Offline-first enterprise assessment and monitoring platform for MSMEs with automated EGI scoring across 10 domains, coach and admin dashboards, data synchronization, analytics, mobile-responsive assessment tools, priority distribution tracking, and comprehensive reporting.",
+    tags: ["Offline-first", "Sync", "Analytics", "Dashboards", "MSME"],
+    link: "#",
+    company: "Enterprise Monitoring",
+    role: "Full Stack Developer",
+    image: "/EnterpriseAssement.png",
+    featured: true,
+  },
+  {
+    id: 15,
+    slug: "nonprofit-landing-page",
+    title: "Landing Page",
+    description:
+      "Modern dynamic landing page for a non-profit organization with responsive layouts, animated UI sections, interactive components, optimized mobile and desktop performance, program showcases, donation integration, and career sections.",
+    tags: ["Next.js", "Landing Page", "Animations", "Donation", "Responsive"],
+    link: "#",
+    company: "Non-profit Organization",
+    role: "Frontend Developer",
+    image: "/LandingPage.png",
+    featured: true,
+  },
+  {
     id: 6,
     slug: "elisoft-solution",
     title: "Elisoft Solution",
@@ -192,7 +257,7 @@ export const projects: Project[] = [
     link: "https://elisoftsolution.com/",
     company: "Elisoft",
     role: "Full Stack Developer",
-    image: "/placeholder.jpg",
+    image: "/ElisoftSolution.png",
   },
   {
     id: 3,

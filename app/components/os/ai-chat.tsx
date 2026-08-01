@@ -16,9 +16,9 @@ interface PendingContact {
 
 const SUGGESTIONS = [
   "What's Abrham's tech stack?",
-  "Tell me about the PTGR project",
+  "Tell me about the Landing Page & CRM",
+  "What is the Mary Joy system?",
   "Tell Abrham I want to build a platform",
-  "Where has he worked?",
 ]
 
 const GREETING =
