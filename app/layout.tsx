@@ -2,6 +2,7 @@ import "@/styles/globals.css"
 import localFont from "next/font/local"
 import DevCursor from "./components/os/dev-cursor"
 import { Toaster } from "sonner"
+import { person, projects } from "@/lib/data"
 
 // Fonts are self-hosted (woff2 in app/fonts) so the build never depends on
 // fetching from Google Fonts — no network flakiness, faster builds.
@@ -33,9 +34,84 @@ const mono = localFont({
 })
 
 const siteUrl = "https://abrhamababu.pro.et"
-const siteTitle = "Abrham Ababu —  Senior Full Stack Developer"
+const siteTitle = "Abrham Ababu | Senior Full Stack Developer in Ethiopia"
 const siteDescription =
-  "Abrham Ababu is a Full-Stack Software Developer experienced in Next.js, React, TypeScript, NestJS, Laravel, ERPNext, and scalable web applications."
+  "Official portfolio of Abrham Ababu, a Senior Full Stack Developer in Addis Ababa, Ethiopia, building Next.js, React, TypeScript, NestJS, Laravel, ERPNext, and scalable web applications."
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#person`,
+      name: person.name,
+      givenName: person.firstName,
+      familyName: person.lastName,
+      url: siteUrl,
+      image: `${siteUrl}/Abrish.jpg`,
+      jobTitle: "Senior Full Stack Developer",
+      email: `mailto:${person.email}`,
+      telephone: person.phone,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Addis Ababa",
+        addressCountry: "ET",
+      },
+      sameAs: [person.socials.github, person.socials.linkedin, person.socials.telegram],
+      knowsAbout: [
+        "Full Stack Development",
+        "Next.js",
+        "React",
+        "TypeScript",
+        "NestJS",
+        "Laravel",
+        "ERPNext",
+        "Node.js",
+        "Web Applications",
+      ],
+      alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "Hope University",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: "Abrham Ababu Portfolio",
+      description: siteDescription,
+      inLanguage: "en",
+      publisher: {
+        "@id": `${siteUrl}/#person`,
+      },
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${siteUrl}/#profile-page`,
+      url: siteUrl,
+      name: siteTitle,
+      description: siteDescription,
+      isPartOf: {
+        "@id": `${siteUrl}/#website`,
+      },
+      mainEntity: {
+        "@id": `${siteUrl}/#person`,
+      },
+      hasPart: projects
+        .filter((project) => project.link && project.link !== "#")
+        .slice(0, 8)
+        .map((project) => ({
+          "@type": "CreativeWork",
+          name: project.title,
+          description: project.description,
+          url: project.link,
+          creator: {
+            "@id": `${siteUrl}/#person`,
+          },
+        })),
+    },
+  ],
+}
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -105,6 +181,12 @@ export default function RootLayout({
       <body className="font-sans">
         <DevCursor />
         <Toaster richColors position="top-right" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
         {children}
       </body>
     </html>
