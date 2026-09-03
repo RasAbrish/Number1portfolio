@@ -7,7 +7,7 @@ export const maxDuration = 30
 // no database or vector store. Uses Groq's OpenAI-compatible API; set
 // GROQ_API_KEY in the Vercel dashboard. Swap GROQ_MODEL to try other models.
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile"
+const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b"
 const MAX_ERROR_BODY_LENGTH = 1_000
 
 const SYSTEM = `You are the professional AI assistant on Abrham Ababu's developer portfolio. You represent Abrham to visitors — potential clients, recruiters, and collaborators — so be courteous, polished, and genuinely appreciative of every question. Your job is to answer questions about Abrham (his experience, skills, projects, education, and how to reach him), grounded strictly in the CV below.
@@ -61,7 +61,7 @@ function groqFailureResponse(status: number, body: string) {
     )
   }
 
-  if (status === 400 && /model|permission|decommission|does not exist|not found/i.test(body)) {
+  if ((status === 400 || status === 404) && /model|permission|decommission|does not exist|not found/i.test(body)) {
     return Response.json(
       { error: `The AI assistant model is not available. Please check GROQ_MODEL (${GROQ_MODEL}).` },
       { status: 503 },
