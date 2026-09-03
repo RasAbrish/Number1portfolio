@@ -8,6 +8,7 @@ export const maxDuration = 30
 // GROQ_API_KEY in the Vercel dashboard. Swap GROQ_MODEL to try other models.
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile"
+const MAX_ERROR_BODY_LENGTH = 1_000
 
 const SYSTEM = `You are the professional AI assistant on Abrham Ababu's developer portfolio. You represent Abrham to visitors — potential clients, recruiters, and collaborators — so be courteous, polished, and genuinely appreciative of every question. Your job is to answer questions about Abrham (his experience, skills, projects, education, and how to reach him), grounded strictly in the CV below.
 
@@ -34,8 +35,45 @@ interface ChatMessage {
   content: string
 }
 
+async function readErrorBody(response: Response) {
+  const text = await response.text().catch(() => "")
+  return text.slice(0, MAX_ERROR_BODY_LENGTH)
+}
+
+function groqFailureResponse(status: number, body: string) {
+  console.error("Groq chat completion failed", {
+    status,
+    model: GROQ_MODEL,
+    body,
+  })
+
+  if (status === 401 || status === 403) {
+    return Response.json(
+      { error: "The AI assistant is not configured correctly. Please check the Groq API key in Vercel." },
+      { status: 503 },
+    )
+  }
+
+  if (status === 429) {
+    return Response.json(
+      { error: "The AI assistant is temporarily rate limited. Please try again in a moment." },
+      { status: 429 },
+    )
+  }
+
+  if (status === 400 && /model|permission|decommission|does not exist|not found/i.test(body)) {
+    return Response.json(
+      { error: `The AI assistant model is not available. Please check GROQ_MODEL (${GROQ_MODEL}).` },
+      { status: 503 },
+    )
+  }
+
+  return Response.json({ error: "The AI service is unavailable right now." }, { status: 502 })
+}
+
 export async function POST(req: Request) {
   if (!process.env.GROQ_API_KEY) {
+    console.error("Groq chat completion skipped: GROQ_API_KEY is missing")
     return Response.json(
       { error: "The AI assistant isn't configured yet — set GROQ_API_KEY in the environment." },
       { status: 503 },
@@ -74,12 +112,14 @@ export async function POST(req: Request) {
         messages: [{ role: "system", content: SYSTEM }, ...history],
       }),
     })
-  } catch {
+  } catch (error) {
+    console.error("Could not reach Groq chat completions", error)
     return Response.json({ error: "Could not reach the AI service." }, { status: 502 })
   }
 
   if (!groqRes.ok || !groqRes.body) {
-    return Response.json({ error: `AI service error (${groqRes.status}).` }, { status: 502 })
+    const body = await readErrorBody(groqRes)
+    return groqFailureResponse(groqRes.status, body)
   }
 
   const encoder = new TextEncoder()
