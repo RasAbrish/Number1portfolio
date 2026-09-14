@@ -104,7 +104,7 @@ export default function OsNavbar() {
             </button>
             <a
               href={person.cv}
-              download="Abrham-Ababu-CV.pdf"
+              download="Abrham_Ababu_Resume-2026.pdf"
               className="ml-1.5 inline-flex items-center gap-1.5 rounded-md border border-primary/40 bg-primary/10 px-3.5 py-1.5 font-mono text-xs text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground"
             >
               <Download className="h-3 w-3" />
@@ -145,7 +145,7 @@ export default function OsNavbar() {
             ))}
             <a
               href={person.cv}
-              download="Abrham-Ababu-CV.pdf"
+              download="Abrham_Ababu_Resume-2026.pdf"
               className="mt-1 inline-flex items-center gap-2 rounded-md border border-primary/40 bg-primary/10 px-3 py-2.5 font-mono text-sm text-primary"
             >
               <Download className="h-3.5 w-3.5" />

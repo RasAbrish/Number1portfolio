@@ -96,7 +96,7 @@ export default function AboutPage() {
               <Link href="/projects" className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm text-primary-foreground">
                 View projects <ArrowRight className="h-4 w-4" />
               </Link>
-              <a href={person.cv} download="Abrham-Ababu-CV.pdf" className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm">
+              <a href={person.cv} download="Abrham_Ababu_Resume-2026.pdf" className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm">
                 <Download className="h-4 w-4" /> Download CV
               </a>
             </div>
