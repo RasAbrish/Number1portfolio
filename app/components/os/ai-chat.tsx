@@ -22,7 +22,7 @@ const SUGGESTIONS = [
 ]
 
 const GREETING =
-  "Hi — I'm Abrham's AI assistant, trained on his CV and portfolio at abrhamababu.pro.et. Ask me about his experience, projects, skills, or how to reach him."
+  "Hi — I'm Abrham's AI assistant, trained on his CV and portfolio at abrhamababuportfolio.vercel.app. Ask me about his experience, projects, skills, or how to reach him."
 
 export default function AiChat() {
   const [open, setOpen] = useState(false)

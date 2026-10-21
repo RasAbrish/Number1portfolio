@@ -34,7 +34,7 @@ const mono = localFont({
   src: [{ path: "./fonts/jetbrains-mono-latin-wght-normal.woff2", weight: "100 800", style: "normal" }],
 })
 
-const siteUrl = "https://abrhamababu.pro.et"
+const siteUrl = "https://abrhamababuportfolio.vercel.app"
 const siteTitle = "Abrham Ababu | Senior Full Stack Developer in Ethiopia"
 const siteDescription =
   "Official portfolio of Abrham Ababu, a Senior Full Stack Developer in Addis Ababa, Ethiopia, building Next.js, React, TypeScript, NestJS, Laravel, ERPNext, and scalable web applications."
