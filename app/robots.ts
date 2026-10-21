@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://abrhamababu.pro.et/sitemap.xml",
+    sitemap: "https://abrhamababuportfolio.vercel.app/sitemap.xml",
   }
 }
