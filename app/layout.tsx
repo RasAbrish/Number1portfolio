@@ -131,8 +131,7 @@ export const metadata = {
   authors: [{ name: "Abrham Ababu", url: siteUrl }],
   creator: "Abrham Ababu",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
+    icon: { url: "/favicon-96x96.png", type: "image/png", sizes: "96x96" },
   },
   alternates: {
     canonical: "/",
