@@ -1,4 +1,6 @@
 import { CV_TEXT } from "@/lib/cv-context"
+import { allowProcessRequest } from "@/lib/rate-limit"
+import { errorSummary, guardPost, readJsonBody, safeIdentifier, TOO_MANY_REQUESTS } from "@/lib/request-guard"
 
 export const runtime = "nodejs"
 export const maxDuration = 30
@@ -8,7 +10,10 @@ export const maxDuration = 30
 // GROQ_API_KEY in the Vercel dashboard. Swap GROQ_MODEL to try other models.
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b"
-const MAX_ERROR_BODY_LENGTH = 1_000
+const GROQ_TIMEOUT_MS = 25_000
+const STREAM_FAILURE_TEXT = "\n\n[Something went wrong. Please try again or email abrhambest7@gmail.com.]"
+const MAX_HISTORY = 12
+const MAX_MESSAGE_LENGTH = 4_000
 
 const SYSTEM = `You are the professional AI assistant on Abrham Ababu's developer portfolio. You represent Abrham to visitors — potential clients, recruiters, and collaborators — so be courteous, polished, and genuinely appreciative of every question. Your job is to answer questions about Abrham (his experience, skills, projects, education, and how to reach him), grounded strictly in the CV below.
 
@@ -35,66 +40,83 @@ interface ChatMessage {
   content: string
 }
 
-async function readErrorBody(response: Response) {
-  const text = await response.text().catch(() => "")
-  return text.slice(0, MAX_ERROR_BODY_LENGTH)
+// The full error text can echo the visitor's message, so only its code gets logged.
+async function readErrorCode(response: Response) {
+  const data = await response.json().catch(() => null)
+  return safeIdentifier(data?.error?.code) ?? safeIdentifier(data?.error?.type)
 }
 
-function groqFailureResponse(status: number, body: string) {
+function groqFailureResponse(status: number, code: string | undefined) {
   console.error("Groq chat completion failed", {
     status,
     model: GROQ_MODEL,
-    body,
+    code,
   })
 
-  if (status === 401 || status === 403) {
-    return Response.json(
-      { error: "The AI assistant is not configured correctly. Please check the Groq API key in Vercel." },
-      { status: 503 },
-    )
+  if (status === 401 || status === 403 || status === 400 || status === 404) {
+    return Response.json({ error: "The AI assistant is unavailable right now." }, { status: 503 })
   }
 
   if (status === 429) {
-    return Response.json(
-      { error: "The AI assistant is temporarily rate limited. Please try again in a moment." },
-      { status: 429 },
-    )
+    return Response.json({ error: "The AI assistant is busy. Please try again in a moment." }, { status: 429 })
   }
 
-  if ((status === 400 || status === 404) && /model|permission|decommission|does not exist|not found/i.test(body)) {
-    return Response.json(
-      { error: `The AI assistant model is not available. Please check GROQ_MODEL (${GROQ_MODEL}).` },
-      { status: 503 },
-    )
-  }
+  return Response.json({ error: "The AI assistant is unavailable right now." }, { status: 502 })
+}
 
-  return Response.json({ error: "The AI service is unavailable right now." }, { status: 502 })
+function keptMessages(messages: unknown): ChatMessage[] {
+  if (!Array.isArray(messages)) return []
+
+  return messages
+    .filter(
+      (m): m is ChatMessage =>
+        m !== null &&
+        typeof m === "object" &&
+        (m.role === "user" || m.role === "assistant") &&
+        typeof m.content === "string" &&
+        Boolean(m.content.trim()),
+    )
+    .slice(-MAX_HISTORY)
+    .map(({ role, content }) => ({ role, content }))
 }
 
 export async function POST(req: Request) {
-  if (!process.env.GROQ_API_KEY) {
-    console.error("Groq chat completion skipped: GROQ_API_KEY is missing")
-    return Response.json(
-      { error: "The AI assistant isn't configured yet — set GROQ_API_KEY in the environment." },
-      { status: 503 },
-    )
+  const blocked = guardPost(req, {
+    name: "chat",
+    limit: 20,
+    windowMs: 10 * 60 * 1000,
+  })
+  if (blocked) {
+    return Response.json({ error: blocked.message }, { status: blocked.status })
   }
 
-  let messages: ChatMessage[]
-  try {
-    const body = await req.json()
-    messages = Array.isArray(body?.messages) ? body.messages : []
-  } catch {
-    return Response.json({ error: "Invalid request body." }, { status: 400 })
+  const body = await readJsonBody(req)
+  if ("failure" in body) {
+    return Response.json({ error: body.failure.message }, { status: body.failure.status })
   }
 
-  const history = messages
-    .filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content.trim())
-    .slice(-12)
+  const history = keptMessages((body.data as { messages?: unknown } | null)?.messages)
 
   if (history.length === 0 || history[history.length - 1].role !== "user") {
     return Response.json({ error: "Send a user message." }, { status: 400 })
   }
+
+  if (history.some((m) => m.content.length > MAX_MESSAGE_LENGTH)) {
+    return Response.json({ error: "That message is too long. Please shorten it." }, { status: 400 })
+  }
+
+  if (!process.env.GROQ_API_KEY) {
+    console.error("Groq chat completion skipped: GROQ_API_KEY is missing")
+    return Response.json({ error: "The AI assistant is unavailable right now." }, { status: 503 })
+  }
+
+  // Counted only here, so junk requests can't close the chat for everyone else.
+  if (!allowProcessRequest("chat", 200, 60 * 60 * 1000)) {
+    return Response.json({ error: TOO_MANY_REQUESTS }, { status: 429 })
+  }
+
+  // Cancels the upstream request when the client goes away, whether or not streaming has begun.
+  const upstream = new AbortController()
 
   let groqRes: Response
   try {
@@ -111,19 +133,22 @@ export async function POST(req: Request) {
         max_tokens: 700,
         messages: [{ role: "system", content: SYSTEM }, ...history],
       }),
+      signal: AbortSignal.any([req.signal, upstream.signal, AbortSignal.timeout(GROQ_TIMEOUT_MS)]),
     })
   } catch (error) {
-    console.error("Could not reach Groq chat completions", error)
-    return Response.json({ error: "Could not reach the AI service." }, { status: 502 })
+    if (!req.signal.aborted) {
+      console.error("Could not reach Groq chat completions", errorSummary(error))
+    }
+    return Response.json({ error: "The AI assistant is unavailable right now." }, { status: 502 })
   }
 
   if (!groqRes.ok || !groqRes.body) {
-    const body = await readErrorBody(groqRes)
-    return groqFailureResponse(groqRes.status, body)
+    return groqFailureResponse(groqRes.status, await readErrorCode(groqRes))
   }
 
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
+  let cancelled = false
 
   // Translate Groq's OpenAI-style SSE into a plain-text token stream.
   const stream = new ReadableStream<Uint8Array>({
@@ -143,18 +168,36 @@ export async function POST(req: Request) {
             const data = trimmed.slice(5).trim()
             if (data === "[DONE]") continue
             try {
-              const token = JSON.parse(data)?.choices?.[0]?.delta?.content
+              const event = JSON.parse(data)
+              if (event?.error) {
+                console.error("Groq stream reported an error", {
+                  code: safeIdentifier(event.error.code) ?? safeIdentifier(event.error.type),
+                })
+                controller.enqueue(encoder.encode(STREAM_FAILURE_TEXT))
+                upstream.abort()
+                return
+              }
+              const token = event?.choices?.[0]?.delta?.content
               if (token) controller.enqueue(encoder.encode(token))
             } catch {
               // ignore keep-alive / non-JSON lines
             }
           }
         }
-      } catch {
-        controller.enqueue(encoder.encode("\n\n[Something went wrong. Please try again or email abrhambest7@gmail.com.]"))
+      } catch (error) {
+        if (!cancelled && !req.signal.aborted) {
+          console.error("Groq stream failed", errorSummary(error))
+        }
+        if (!cancelled) {
+          controller.enqueue(encoder.encode(STREAM_FAILURE_TEXT))
+        }
       } finally {
-        controller.close()
+        if (!cancelled) controller.close()
       }
+    },
+    cancel() {
+      cancelled = true
+      upstream.abort()
     },
   })
 

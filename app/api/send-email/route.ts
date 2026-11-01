@@ -1,5 +1,14 @@
 import { type NextRequest, NextResponse } from "next/server"
 import nodemailer from "nodemailer"
+import { buildContactEmailHtml, buildContactEmailText, validateContactInput } from "@/lib/contact-email"
+import { allowProcessRequest } from "@/lib/rate-limit"
+import { errorSummary, guardPost, readJsonBody, TOO_MANY_REQUESTS } from "@/lib/request-guard"
+import { isSmsConfigured, normalizeEthiopianPhone, sendSms } from "@/lib/sms"
+import { buildOwnerAlertSms, buildThankYouSms } from "@/lib/sms-templates"
+
+const HOUR_MS = 60 * 60 * 1000
+const SMTP_TIMEOUT_MS = 10_000
+const OWNER_PHONE = normalizeEthiopianPhone(process.env.SMS_OWNER_PHONE || "")
 
 const CONTACT_RECIPIENT = process.env.CONTACT_RECIPIENT || "abrhambest7@gmail.com"
 
@@ -16,6 +25,9 @@ const transporter =
         host: smtpHost,
         port: smtpPort,
         secure: process.env.MAIL_ENCRYPTION === "ssl" || smtpPort === 465,
+        connectionTimeout: SMTP_TIMEOUT_MS,
+        greetingTimeout: SMTP_TIMEOUT_MS,
+        socketTimeout: SMTP_TIMEOUT_MS,
         auth: {
           user: smtpUser,
           pass: smtpPass,
@@ -23,79 +35,92 @@ const transporter =
       })
     : null
 
+function failure(status: number, message: string) {
+  return NextResponse.json({ success: false, message }, { status })
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, subject, message } = await request.json()
+    const blocked = guardPost(request, {
+      name: "send-email",
+      limit: 5,
+      windowMs: HOUR_MS,
+    })
+    if (blocked) {
+      return failure(blocked.status, blocked.message)
+    }
+
+    const body = await readJsonBody(request)
+    if ("failure" in body) {
+      return failure(body.failure.status, body.failure.message)
+    }
 
     // Validate required fields
-    if (!name || !email || !subject || !message) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "All fields are required",
-        },
-        { status: 400 },
+    const validation = validateContactInput(body.data)
+    if (!validation.ok) {
+      return failure(400, validation.message)
+    }
+
+    const { name, email, subject, message, phone } = validation.data
+    const rawPhone = phone?.trim() || ""
+    const visitorPhone = rawPhone ? normalizeEthiopianPhone(rawPhone) : null
+
+    if (rawPhone && !visitorPhone) {
+      return failure(400, "Please enter a valid Ethiopian phone number, for example 0911223344")
+    }
+
+    const ownerSmsEnabled = isSmsConfigured() && Boolean(OWNER_PHONE)
+
+    // Check that at least one way of reaching the owner is configured
+    if (!transporter && !ownerSmsEnabled) {
+      console.error("Contact request dropped: neither SMTP nor owner SMS is configured")
+
+      return failure(503, "The message could not be sent right now. Please try again later.")
+    }
+
+    // Counted only here, so junk requests can't close the form for everyone else
+    if (!allowProcessRequest("send-email", 60, HOUR_MS)) {
+      return failure(429, TOO_MANY_REQUESTS)
+    }
+
+    const details = { name, email, phone: visitorPhone, subject, message }
+    let emailSent = false
+
+    if (transporter) {
+      try {
+        // Send email using SMTP (Gmail)
+        await transporter.sendMail({
+          from: `"${fromName}" <${fromAddress}>`,
+          to: CONTACT_RECIPIENT,
+          replyTo: email,
+          subject: `Portfolio Contact: ${subject}`,
+          html: buildContactEmailHtml(details),
+          text: buildContactEmailText(details),
+        })
+
+        emailSent = true
+        console.log("Email sent successfully via SMTP to:", CONTACT_RECIPIENT)
+      } catch (error) {
+        console.error("Email send error:", errorSummary(error))
+      }
+    }
+
+    let ownerSmsSent = false
+
+    if (ownerSmsEnabled && OWNER_PHONE) {
+      ownerSmsSent = await sendSms(
+        OWNER_PHONE,
+        buildOwnerAlertSms({ name, email, phone: visitorPhone, subject }),
       )
     }
 
-    // Check if SMTP configuration is present
-    if (!transporter) {
-      console.error("SMTP is not configured correctly")
-      console.log("Email would be sent:", {
-        to: CONTACT_RECIPIENT,
-        from: email,
-        name,
-        subject,
-        message,
-      })
-      
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Email service is not configured. Check MAIL_HOST, MAIL_PORT, MAIL_USERNAME, and MAIL_PASSWORD.",
-        },
-        { status: 500 },
-      )
+    if (!emailSent && !ownerSmsSent) {
+      return failure(500, "Failed to process email")
     }
 
-    // Send email using SMTP (Gmail)
-    await transporter.sendMail({
-      from: `"${fromName}" <${fromAddress}>`,
-      to: CONTACT_RECIPIENT,
-      replyTo: String(email),
-      subject: `Portfolio Contact: ${subject}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333; border-bottom: 2px solid #4F46E5; padding-bottom: 10px;">
-            New Contact Form Submission
-          </h2>
-          <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin-top: 20px;">
-            <p style="margin: 10px 0;"><strong>Name:</strong> ${name}</p>
-            <p style="margin: 10px 0;"><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-            <p style="margin: 10px 0;"><strong>Subject:</strong> ${subject}</p>
-            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-              <strong>Message:</strong>
-              <p style="margin-top: 10px; line-height: 1.6; color: #374151;">${message.replace(/\n/g, "<br>")}</p>
-            </div>
-          </div>
-          <p style="margin-top: 20px; color: #6b7280; font-size: 12px;">
-            This email was sent from your portfolio contact form.
-          </p>
-        </div>
-      `,
-      text: `
-New Contact Form Submission
-
-Name: ${name}
-Email: ${email}
-Subject: ${subject}
-
-Message:
-${message}
-      `,
-    })
-
-    console.log("Email sent successfully via SMTP to:", CONTACT_RECIPIENT)
+    if (visitorPhone) {
+      await sendSms(visitorPhone, buildThankYouSms(name), "thank-you")
+    }
 
     return NextResponse.json(
       {
@@ -105,13 +130,7 @@ ${message}
       { status: 200 },
     )
   } catch (error) {
-    console.error("Email send error:", error)
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Failed to process email",
-      },
-      { status: 500 },
-    )
+    console.error("Email send error:", errorSummary(error))
+    return failure(500, "Failed to process email")
   }
 }
