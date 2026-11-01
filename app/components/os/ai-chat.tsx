@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import { Bot, RotateCcw, Send, Sparkles, X } from "lucide-react"
+import { buildChatRequestBody, MAX_INPUT_LENGTH } from "@/lib/chat-history"
+import { buildAiContactMessage, isValidEmail } from "@/lib/contact-email"
 
 interface Msg {
   role: "user" | "assistant"
@@ -77,7 +79,8 @@ export default function AiChat() {
   }
 
   async function sendContactEmail(contact: PendingContact, confirmation: string) {
-    const visitorEmail = extractEmail(`${contact.request} ${confirmation}`)
+    const foundEmail = extractEmail(`${contact.request} ${confirmation}`)
+    const visitorEmail = foundEmail && isValidEmail(foundEmail) ? foundEmail : undefined
     const transcript = [...contact.transcript, { role: "user" as const, content: confirmation }]
       .map((m) => `${m.role === "user" ? "Visitor" : "Assistant"}: ${m.content}`)
       .join("\n\n")
@@ -89,9 +92,7 @@ export default function AiChat() {
         name: visitorEmail ? "Portfolio AI visitor" : "Portfolio AI visitor (no reply email provided)",
         email: visitorEmail ?? "abrhambest7@gmail.com",
         subject: "Portfolio AI contact request",
-        message: `A visitor asked the AI assistant to contact Abrham.\n\nVisitor request:\n${contact.request}\n\n${
-          visitorEmail ? `Visitor email: ${visitorEmail}` : "Visitor email: not provided"
-        }\n\nConversation transcript:\n${transcript}`,
+        message: buildAiContactMessage(contact.request, visitorEmail, transcript),
       }),
     })
 
@@ -187,7 +188,7 @@ export default function AiChat() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: buildChatRequestBody(next),
       })
 
       if (!res.ok || !res.body) {
@@ -341,6 +342,7 @@ export default function AiChat() {
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                maxLength={MAX_INPUT_LENGTH}
                 placeholder="Ask about Abrham…"
                 className="min-w-0 flex-1 bg-transparent px-1 text-sm text-foreground outline-none placeholder:text-muted-foreground"
               />

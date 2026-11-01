@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Mail, Loader2, CheckCircle2 } from "lucide-react"
 import { toast } from "sonner"
+import { CONTACT_LIMITS } from "@/lib/contact-email"
 
 export default function ContactForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -34,6 +35,7 @@ export default function ContactForm() {
       const formData = new FormData(form)
       const name = formData.get("name")
       const email = formData.get("email")
+      const phone = formData.get("phone")
       const subject = formData.get("subject")
       const messageText = formData.get("message")
 
@@ -45,6 +47,7 @@ export default function ContactForm() {
         body: JSON.stringify({
           name,
           email,
+          phone,
           subject,
           message: messageText,
         }),
@@ -53,11 +56,11 @@ export default function ContactForm() {
       const result = await response.json()
 
       if (response.ok && result.success) {
-        setMessage("Message sent successfully to abrhambest7@gmail.com!")
+        setMessage("Message sent successfully!")
         setIsSent(true)
         toast.success("Message sent successfully.", {
           id: toastId,
-          description: "Delivered to abrhambest7@gmail.com",
+          description: "Abrham will get back to you soon.",
         })
         form.reset()
         resetTimerRef.current = setTimeout(() => {
@@ -101,25 +104,31 @@ export default function ContactForm() {
         <label htmlFor="name" className="text-sm font-medium">
           Name
         </label>
-        <Input id="name" name="name" placeholder="Your full name" required />
+        <Input id="name" name="name" placeholder="Your full name" maxLength={CONTACT_LIMITS.name} required />
       </div>
       <div className="space-y-2">
         <label htmlFor="email" className="text-sm font-medium">
           Email
         </label>
-        <Input id="email" name="email" type="email" placeholder="you@example.com" required />
+        <Input id="email" name="email" type="email" placeholder="you@example.com" maxLength={CONTACT_LIMITS.email} required />
+      </div>
+      <div className="space-y-2">
+        <label htmlFor="phone" className="text-sm font-medium">
+          Phone (optional)
+        </label>
+        <Input id="phone" name="phone" type="tel" placeholder="0911223344" />
       </div>
       <div className="space-y-2">
         <label htmlFor="subject" className="text-sm font-medium">
           Subject
         </label>
-        <Input id="subject" name="subject" placeholder="What is this about?" required />
+        <Input id="subject" name="subject" placeholder="What is this about?" maxLength={CONTACT_LIMITS.subject} required />
       </div>
       <div className="space-y-2">
         <label htmlFor="message" className="text-sm font-medium">
           Message
         </label>
-        <Textarea id="message" name="message" placeholder="Tell me about your project..." className="min-h-[150px]" required />
+        <Textarea id="message" name="message" placeholder="Tell me about your project..." className="min-h-[150px]" maxLength={CONTACT_LIMITS.message} required />
       </div>
       <Button type="submit" className="w-full" disabled={isLoading}>
         {isLoading ? (
